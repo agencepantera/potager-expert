@@ -106,13 +106,13 @@ const criticalStyles = `
     <!-- Chargement asynchrone des styles non critiques -->
     <link 
       rel="stylesheet" 
-      href={Astro.resolve('../styles/fonts.css')} 
+      href="/src/styles/fonts.css" 
       media="print" 
       onload="this.media='all'"
     >
     <link 
       rel="stylesheet" 
-      href={Astro.resolve('../styles/global.css')} 
+      href="/src/styles/global.css" 
       media="print" 
       onload="this.media='all'"
     >
