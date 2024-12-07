@@ -1,0 +1,19 @@
+# Redirection des anciennes polices vers les nouvelles
+RewriteEngine On
+RewriteBase /
+
+# Redirection de l'ancienne police vers la nouvelle
+RewriteRule ^fonts/source-sans-pro-v21-latin-regular\.woff2$ /fonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7l.woff2 [L,R=301]
+
+# Retourner une image vide pour soil-texture.png
+RewriteRule ^images/soil-texture\.png$ - [G,L]
+
+# En-têtes de cache pour les polices
+<FilesMatch "\.(woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+
+# En-têtes de sécurité
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"

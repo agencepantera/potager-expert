@@ -6,84 +6,98 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const inputDir = path.join(__dirname, '../public/images');
-const outputDir = path.join(__dirname, '../public/images/optimized');
-
-// Configuration pour les différentes tailles d'images
-const sizes = {
-    mobile: {
-        width: 640,
-        quality: 75,
-        effort: 6
-    },
-    tablet: {
-        width: 1024,
-        quality: 70,
-        effort: 6
-    },
-    desktop: {
-        width: 1280,
-        quality: 65,
-        effort: 6
-    }
+const SIZES = {
+  mobile: 640,
+  tablet: 1024,
+  desktop: 1280
 };
 
-async function optimizeImage(inputPath, filename) {
-    const ext = path.extname(filename);
-    const name = path.basename(filename, ext);
+const QUALITY_SETTINGS = {
+  webp: {
+    quality: 60,
+    lossless: false,
+    nearLossless: false,
+    smartSubsample: true,
+    effort: 6
+  }
+};
+
+async function optimizeImage(inputPath, outputDir, baseName) {
+  try {
+    const image = sharp(inputPath);
+    const metadata = await image.metadata();
+    const originalSize = (await fs.stat(inputPath)).size;
     
-    if (ext.toLowerCase() === '.webp') {
-        const metadata = await sharp(inputPath).metadata();
+    // Ne pas agrandir les images plus petites que la taille cible
+    const originalWidth = metadata.width;
+    
+    for (const [size, width] of Object.entries(SIZES)) {
+      if (width <= originalWidth) {
+        const outputPath = path.join(
+          outputDir, 
+          `${baseName}-${size}.webp`
+        );
+
+        await image
+          .resize({
+            width,
+            height: Math.round(width * (metadata.height / metadata.width)),
+            fit: 'cover',
+            withoutEnlargement: true
+          })
+          .webp(QUALITY_SETTINGS.webp)
+          .toFile(outputPath);
+
+        const optimizedSize = (await fs.stat(outputPath)).size;
+        const savings = ((originalSize - optimizedSize) / originalSize * 100).toFixed(2);
         
-        for (const [device, config] of Object.entries(sizes)) {
-            try {
-                // Ne pas agrandir les images plus petites que la taille cible
-                const targetWidth = Math.min(config.width, metadata.width);
-                
-                // Calculer la hauteur proportionnelle
-                const targetHeight = Math.round((targetWidth * metadata.height) / metadata.width);
-                
-                await sharp(inputPath)
-                    .resize(targetWidth, targetHeight, {
-                        fit: 'cover',
-                        position: 'attention' // Utilise l'algorithme d'attention pour un meilleur cadrage
-                    })
-                    .webp({ 
-                        quality: config.quality,
-                        effort: config.effort,
-                        nearLossless: true,
-                        smartSubsample: true,
-                        force: true
-                    })
-                    .toFile(path.join(outputDir, `${name}-${device}${ext}`));
-                
-                const stats = await fs.stat(path.join(outputDir, `${name}-${device}${ext}`));
-                console.log(`Optimized ${filename} for ${device} - Size: ${(stats.size / 1024).toFixed(2)} KB`);
-            } catch (error) {
-                console.error(`Error processing ${filename} for ${device}:`, error);
-            }
-        }
+        console.log(`Optimized ${size} version: ${outputPath}`);
+        console.log(`Size reduction: ${savings}% (${(originalSize/1024).toFixed(2)}KB -> ${(optimizedSize/1024).toFixed(2)}KB)`);
+      }
     }
+  } catch (error) {
+    console.error(`Error optimizing ${inputPath}:`, error);
+  }
 }
 
 async function processImages() {
-    try {
-        // Créer le dossier de sortie s'il n'existe pas
-        await fs.mkdir(outputDir, { recursive: true });
-        
-        const files = await fs.readdir(inputDir);
-        
-        for (const file of files) {
-            if (path.extname(file).toLowerCase() === '.webp') {
-                const inputPath = path.join(inputDir, file);
-                await optimizeImage(inputPath, file);
-            }
-        }
-        
-        console.log('Image optimization complete!');
-    } catch (error) {
-        console.error('Error processing images:', error);
+  const inputDir = path.join(__dirname, '../public/images');
+  const outputDir = path.join(__dirname, '../public/images/optimized');
+
+  try {
+    // Créer le dossier de sortie s'il n'existe pas
+    await fs.mkdir(outputDir, { recursive: true });
+
+    // Nettoyer le dossier de sortie
+    const existingFiles = await fs.readdir(outputDir);
+    for (const file of existingFiles) {
+      await fs.unlink(path.join(outputDir, file));
     }
+
+    // Lire tous les fichiers du dossier d'entrée
+    const files = await fs.readdir(inputDir);
+
+    // Filtrer pour ne garder que les images
+    const imageFiles = files.filter(file => 
+      /\.(jpg|jpeg|png|webp)$/i.test(file)
+    );
+
+    console.log(`Found ${imageFiles.length} images to process`);
+
+    // Traiter chaque image
+    for (const file of imageFiles) {
+      const inputPath = path.join(inputDir, file);
+      const baseName = path.parse(file).name;
+      
+      console.log(`\nProcessing: ${file}`);
+      await optimizeImage(inputPath, outputDir, baseName);
+    }
+
+    console.log('\nImage optimization complete!');
+  } catch (error) {
+    console.error('Error processing images:', error);
+  }
 }
 
-processImages().catch(console.error);
+// Exécuter le script
+processImages();
