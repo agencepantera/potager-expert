@@ -3,19 +3,8 @@ const currentYear = new Date().getFullYear();
 
 const footerLinks = {
   Expertise: [
-    { label: 'Guides Expert', href: '/guides' },
     { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
-  ],
-  Resources: [
-    { label: 'Calendrier de Culture', href: '/calendrier' },
-    { label: 'Base de Connaissances', href: '/ressources' },
-    { label: 'FAQ', href: '/faq' },
-  ],
-  Communauté: [
-    { label: 'Forum', href: '/forum' },
-    { label: 'Événements', href: '/evenements' },
-    { label: 'Témoignages', href: '/temoignages' },
   ],
 };
 
@@ -53,18 +42,6 @@ const socialLinks = [
           Votre guide expert pour créer et entretenir un potager d'exception. 
           Découvrez nos guides et conseils pour cultiver comme un professionnel.
         </p>
-        <!-- Réseaux sociaux -->
-        <div class="flex space-x-4">
-          {socialLinks.map(social => (
-            <a 
-              href={social.href}
-              class="w-10 h-10 flex items-center justify-center rounded-full border border-leaf-200 dark:border-leaf-800 text-soil-600 dark:text-soil-400 hover:border-leaf-500 hover:text-leaf-500 transition-colors duration-200"
-              aria-label={social.label}
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" set:html={social.icon} />
-            </a>
-          ))}
-        </div>
       </div>
 
       <!-- Liens -->
