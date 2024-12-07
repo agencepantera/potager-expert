@@ -1,0 +1,76 @@
+---
+interface Props {
+  headings: {
+    depth: number;
+    slug: string;
+    text: string;
+  }[];
+}
+
+const { headings } = Astro.props;
+---
+
+<nav class="toc not-prose bg-white rounded-xl shadow-md border border-leaf-100 p-6 lg:sticky lg:top-32">
+  <h2 class="font-display font-bold text-xl mb-6 text-leaf-800 pb-4 border-b border-leaf-100">Sommaire</h2>
+  <ul class="space-y-4">
+    {headings.map(heading => (
+      <li class={`${heading.depth === 2 ? '' : 'ml-4'}`}>
+        <a
+          href={`#${heading.slug}`}
+          class={`
+            block text-gray-600 hover:text-leaf-700 transition-colors
+            ${heading.depth === 2 ? 'font-medium' : 'text-sm'}
+          `}
+        >
+          {heading.text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const href = this.getAttribute('href');
+    if (!href) return;
+    
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    // Ajouter un offset pour la navbar fixe
+    const offset = 100;
+    const elementPosition = target.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+
+    history.pushState(null, '', href);
+  });
+});
+
+// Mettre en surbrillance la section active
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      document.querySelectorAll('.toc a').forEach(link => {
+        link.classList.remove('text-leaf-700', 'font-medium');
+        if (link.getAttribute('href') === `#${id}`) {
+          link.classList.add('text-leaf-700', 'font-medium');
+        }
+      });
+    }
+  });
+}, {
+  rootMargin: '-100px 0px -66%'
+});
+
+document.querySelectorAll('h2[id], h3[id]').forEach((heading) => {
+  observer.observe(heading);
+});
+</script>

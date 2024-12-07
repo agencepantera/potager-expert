@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import { blogPosts } from '../../data/blog';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+
+const post = blogPosts.find(p => p.slug === 'semis-travaux-janvier-potager');
+if (!post) throw new Error('Article non trouvé');
+
+const formattedDate = new Date(post.date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<Layout title={post.title}>
+  <div class="h-24"></div>
+  <section class="relative py-16 min-h-[400px] flex items-center">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <Image
+        src={post.image}
+        alt={post.title}
+        width={1920}
+        height={1080}
+        class="w-full h-full object-cover opacity-30"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-leaf-50/80 via-leaf-50/95 to-white"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <header class="max-w-4xl mx-auto text-center">
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 backdrop-blur-sm border border-leaf-400/50 text-leaf-800 text-sm">
+            {post.category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800 drop-shadow-sm">{post.title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="font-medium">{post.author}</span>
+          <span>•</span>
+          <time datetime={post.date} class="font-medium">{formattedDate}</time>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-12 relative">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+        <TableOfContents headings={post.headings} />
+      </aside>
+      
+      <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
+        <p class="text-xl text-gray-600 mb-8 font-medium">{post.excerpt}</p>
+        
+        <p>Janvier, c'est le mois où on se les gèle et où on préfère rester au chaud sous la couette. Mais pour nous, les jardiniers passionnés, c'est le moment de sortir les bottes et de se bouger les fesses ! Allez, on enfile son plus beau bonnet et on file au potager. Je vais te donner tous mes petits secrets pour bien démarrer l'année et préparer un jardin qui va faire des jaloux.</p>
+
+        <Image
+          src="/images/preparation_potager_pour_printemps.webp"
+          alt="Travaux de jardinage en janvier"
+          width={1200}
+          height={800}
+          class="my-8 rounded-lg shadow-lg"
+        />
+
+        <h2 id="planifier-potager">Planifier son potager : le secret d'une récolte abondante</h2>
+        <p>Avant de mettre les mains dans la terre, il faut se servir de sa tête. Je sais, ça peut faire mal au début, mais c'est pour la bonne cause ! La planification, c'est la clé d'un potager réussi. Alors, sors ton crayon et ton papier, on va faire un petit plan.</p>
+        <p>Commence par dresser la liste des légumes que tu veux cultiver cette année. Fais comme moi, pense à tes plats préférés et aux légumes qui coûtent un bras au supermarché. Ensuite, dessine un plan de ton jardin en tenant compte de la rotation des cultures. C'est comme un jeu de chaises musicales pour les légumes, ça évite d'épuiser le sol.</p>
+
+        <div class="overflow-x-auto my-8">
+          <table class="table-auto w-full">
+            <thead>
+              <tr>
+                <th>Année 1</th>
+                <th>Année 2</th>
+                <th>Année 3</th>
+                <th>Année 4</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Légumes-feuilles</td>
+                <td>Légumes-fruits</td>
+                <td>Légumes-racines</td>
+                <td>Légumineuses</td>
+              </tr>
+              <tr>
+                <td>Salades, épinards</td>
+                <td>Tomates, courgettes</td>
+                <td>Carottes, navets</td>
+                <td>Haricots, pois</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>N'oublie pas de prévoir des allées entre tes parcelles. C'est pas pour faire joli, c'est pour éviter de te casser la figure quand tu iras arroser. Et crois-moi, j'ai déjà fait le coup, c'est pas très glorieux !</p>
+
+        <h2 id="preparer-sol">Préparer le sol : bichonner la terre pour des légumes au top</h2>
+        <p>Maintenant qu'on a un plan digne d'un architecte, on va s'occuper de la terre. C'est comme préparer un bon lit douillet pour tes futurs légumes. Commence par enlever les mauvaises herbes qui ont eu l'audace de pointer leur nez pendant l'hiver. Pas de pitié pour ces squatteurs !</p>
+        <p>Ensuite, c'est l'heure du bêchage. Prends ta bêche ou ta grelinette et aère le sol en profondeur. Fais gaffe à ton dos, hein ! Je ne voudrais pas que tu finisses plié en deux comme une vieille branche. Une fois que c'est fait, apporte un bon compost bien décomposé à ta terre. C'est comme un bon petit-déjeuner pour ton sol, ça va lui donner la pêche pour toute l'année.</p>
+        <p>Si ton sol est trop acide, c'est le moment d'ajouter un peu de chaux. Par contre, si c'est un sol calcaire, tu peux l'amender avec de la tourbe ou du fumier de cheval. Tiens, ça me rappelle une anecdote : l'année dernière, j'ai voulu faire le malin en allant chercher du fumier directement à l'écurie du coin. Résultat ? J'ai passé la journée à sentir le canasson. Ma femme n'a pas apprécié !</p>
+
+        <h2 id="semis-janvier">Les semis de janvier : lancer la saison en beauté</h2>
+        <p>Allez, on arrive au moment excitant : les semis ! En janvier, on commence doucement, mais sûrement. La plupart des semis se feront à l'intérieur, histoire de leur éviter un choc thermique. Crois-moi, les petites graines, c'est comme nous, ça n'aime pas trop le froid aux fesses !</p>
+
+        <ul>
+          <li>Sous abri chauffé : tomates, aubergines, poivrons</li>
+          <li>Sous châssis ou en serre froide : laitues, choux, oignons</li>
+          <li>En pleine terre (si le temps le permet) : fèves, petits pois</li>
+        </ul>
+
+        <p>Pour les semis en intérieur, utilise des godets biodégradables ou des plaques de semis. Remplis-les d'un terreau spécial semis, bien fin et léger. Sème tes graines en les espaçant correctement (lis les instructions sur le sachet, je sais que c'est chiant mais c'est important). Recouvre-les légèrement de terreau, arrose délicatement et place le tout dans un endroit chaud et lumineux.</p>
+
+        <h2 id="entretien-protection">Entretien et protection : chouchouter son potager hivernal</h2>
+        <p>Même si ton potager fait un peu la sieste en hiver, il a quand même besoin de ton attention. C'est le moment de faire un check-up général et de protéger tes cultures des rigueurs de l'hiver. Crois-en mon expérience de plus de vingt ans, un peu de prévention peut sauver ta récolte !</p>
+
+        <ul>
+          <li>Utilise des voiles d'hivernage pour couvrir tes légumes sensibles au gel.</li>
+          <li>Place des cloches sur tes jeunes plants pour créer un micro-climat.</li>
+          <li>Paille généreusement autour des pieds de tes légumes d'hiver.</li>
+          <li>Si tu as des arbres fruitiers, n'oublie pas de les chauler pour les protéger des parasites.</li>
+        </ul>
+
+        <p>Voilà, tu as toutes les cartes en main pour démarrer l'année du bon pied dans ton potager. Avec ces conseils, tu vas pouvoir préparer un jardin qui va faire des envieux dans le quartier. Et n'oublie pas, le jardinage, c'est comme la cuisine : un peu d'amour, beaucoup de patience, et une pincée de folie ! Allez, enfile tes gants et va faire danser les légumes !</p>
+      </div>
+    </div>
+  </article>
+
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

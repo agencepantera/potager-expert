@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { blogPosts } from '../data/blog';
+
+// Récupérer les 3 articles les plus récents
+const featuredPosts = blogPosts
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+---
+
+<Layout title="Potager Expert - Votre guide pour un potager d'exception">
+  <Hero />
+
+  <!-- Section Articles -->
+  <section class="relative py-24 overflow-hidden">
+    <!-- Fond décoratif -->
+    <div class="absolute inset-0 bg-gradient-to-b from-soil-50/80 to-white dark:from-soil-950/80 dark:to-soil-900"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(116,184,22,0.05),transparent_40%)]"></div>
+    
+    <div class="relative container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-soil-800 dark:text-soil-100">
+          Derniers Articles
+        </h2>
+        <p class="text-lg text-soil-600 dark:text-soil-400 max-w-2xl mx-auto">
+          Découvrez nos guides et conseils pour créer et entretenir votre potager comme un expert
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {featuredPosts.map(post => (
+          <div class="transform hover:-translate-y-1 transition-transform duration-300">
+            <BlogCard {...post} />
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center">
+        <a
+          href="/blog"
+          class="group inline-flex items-center px-8 py-4 text-base font-medium rounded-xl bg-soil-800 text-white hover:bg-soil-700 dark:bg-soil-700 dark:hover:bg-soil-600 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200"
+        >
+          Voir tous les articles
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-200" 
+            viewBox="0 0 20 20" 
+            fill="currentColor"
+          >
+            <path 
+              fill-rule="evenodd" 
+              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" 
+              clip-rule="evenodd" 
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,148 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { blogPosts } from '../../data/blog';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+
+const post = blogPosts.find(p => p.slug === 'permaculture-debutants');
+if (!post) throw new Error('Article non trouvé');
+
+const headings = [
+  { text: "La permaculture, kesako ?", slug: "introduction", depth: 2 },
+  { text: "Les principes de base", slug: "principes", depth: 2 },
+  { text: "Démarrer son jardin en permaculture", slug: "demarrage", depth: 2 },
+  { text: "Les techniques essentielles", slug: "techniques", depth: 2 },
+  { text: "Les plantes compagnes", slug: "plantes", depth: 2 },
+  { text: "L'entretien au naturel", slug: "entretien", depth: 2 }
+];
+---
+
+<Layout title={post.title}>
+  <div class="h-24"></div>
+  <section class="bg-gradient-to-br from-leaf-50 to-white py-16">
+    <div class="container mx-auto px-4">
+      <header class="max-w-4xl mx-auto text-center">
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 border border-leaf-400/50 text-leaf-800 text-sm">
+            {post.category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800">{post.title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="font-medium">{post.author}</span>
+          <span>•</span>
+          <time datetime={post.date} class="font-medium">{new Date(post.date).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}</time>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-12">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+        <TableOfContents headings={headings} />
+      </aside>
+      
+      <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
+        <p class="text-xl text-gray-600 mb-8 font-medium">{post.excerpt}</p>
+
+        <h2 id="introduction">La permaculture, kesako ?</h2>
+        <p>
+          Alors, la permaculture, c'est pas juste un mot compliqué pour impressionner vos amis au barbecue ! C'est une façon 
+          de jardiner qui fait copain-copain avec la nature au lieu de se battre contre elle. Après des années à bêcher comme 
+          un forcené, j'ai découvert qu'on pouvait faire mieux avec moins d'effort. Ça vous tente ?
+        </p>
+
+        <h2 id="principes">Les principes de base</h2>
+        <p>
+          La permaculture, c'est un peu comme un jeu vidéo où vous devez créer un écosystème qui tourne tout seul. Voici les 
+          règles du jeu :
+        </p>
+        <ul>
+          <li><strong>Observer avant d'agir :</strong> Regardez comment fonctionne votre jardin (comme un ninja)</li>
+          <li><strong>Travailler avec la nature :</strong> Les mauvaises herbes n'existent pas, il n'y a que des plantes mal placées</li>
+          <li><strong>Zéro déchet :</strong> Tout ce qui sort de votre jardin doit y retourner (c'est le cycle de la vie, Simba !)</li>
+          <li><strong>Créer des connexions :</strong> Chaque élément doit avoir plusieurs fonctions</li>
+        </ul>
+
+        <div class="bg-leaf-100 p-6 rounded-lg my-8">
+          <h4 class="font-bold mb-4">Ma révélation :</h4>
+          <p>
+            Le jour où j'ai compris que les limaces n'étaient pas mes ennemies mais la nourriture des hérissons, ça a changé 
+            ma vie ! Maintenant, j'ai un hérisson qui fait sa ronde tous les soirs, et mes salades ne ressemblent plus à de la 
+            dentelle.
+          </p>
+        </div>
+
+        <h2 id="demarrage">Démarrer son jardin en permaculture</h2>
+        <p>
+          On va pas se mentir, au début, ça fait un peu peur. Mais c'est comme apprendre à faire du vélo : une fois qu'on a 
+          compris, on ne peut plus l'oublier ! Voici comment je conseille de commencer :
+        </p>
+        <ul>
+          <li>Commencez petit (genre très petit, genre minuscule)</li>
+          <li>Faites une butte en lasagne (rien à voir avec les pâtes, promis)</li>
+          <li>Installez un compost (votre nouveau meilleur ami)</li>
+          <li>Observez votre terrain pendant les différentes saisons</li>
+        </ul>
+
+        <h2 id="techniques">Les techniques essentielles</h2>
+        <p>
+          Voici mes techniques préférées, testées et approuvées par mon dos qui ne me fait plus mal :
+        </p>
+        <ul>
+          <li><strong>Le paillage :</strong> Couvrez tout ! Un sol nu, c'est comme sortir tout nu en hiver</li>
+          <li><strong>Les buttes en lasagne :</strong> Empilage stratégique de matières vertes et brunes</li>
+          <li><strong>Le non-travail du sol :</strong> Laissez les vers de terre faire le boulot à votre place</li>
+          <li><strong>La culture sur buttes :</strong> Pour avoir le dos moins cassé et des légumes plus heureux</li>
+        </ul>
+
+        <div class="bg-soil-100 p-6 rounded-lg my-8">
+          <h4 class="font-bold mb-4">L'astuce qui change tout :</h4>
+          <p>
+            Gardez toutes vos boîtes d'œufs et vos journaux ! Le carton et le papier font un paillage parfait pour démarrer 
+            un nouveau massif. Posez, arrosez, recouvrez de paille, et hop, en 6 mois, le gazon a disparu comme par magie !
+          </p>
+        </div>
+
+        <h2 id="plantes">Les plantes compagnes</h2>
+        <p>
+          En permaculture, les plantes sont comme une bande de potes qui s'entraident. Voici mes associations préférées :
+        </p>
+        <ul>
+          <li>Tomates + Basilic = Le couple star (et des sauces qui déchirent)</li>
+          <li>Carottes + Poireaux = Protection mutuelle contre les parasites</li>
+          <li>Fraises + Ail = Les limaces détestent (et les vampires aussi)</li>
+          <li>Haricots + Maïs = Le haricot grimpe, le maïs supporte (c'est beau l'amitié)</li>
+        </ul>
+
+        <h2 id="entretien">L'entretien au naturel</h2>
+        <p>
+          L'entretien en permaculture, c'est un peu comme être le chef d'orchestre de la nature. Voici comment je gère mon 
+          petit paradis :
+        </p>
+        <ul>
+          <li>Laissez quelques "mauvaises herbes" (ce sont des plantes bio-indicatrices)</li>
+          <li>Installez des haies d'arbustes locaux pour attirer les oiseaux</li>
+          <li>Créez des points d'eau pour la biodiversité</li>
+          <li>Faites confiance aux insectes auxiliaires (vos nouveaux collègues de travail)</li>
+        </ul>
+
+        <div class="bg-leaf-100 p-6 rounded-lg my-8">
+          <h4 class="font-bold mb-4">Le mot de la fin :</h4>
+          <p>
+            La permaculture, c'est comme le jazz : au début on comprend rien, et puis un jour ça fait "clic" ! N'ayez pas peur 
+            de faire des erreurs, la nature est plus résiliente qu'on ne le pense. Et puis, au pire, vous pourrez toujours dire 
+            que c'était votre intention de créer une "zone sauvage" dans votre jardin !
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

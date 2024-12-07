@@ -1,0 +1,117 @@
+---
+interface Props {
+  category?: string;
+  categories: string[];
+}
+
+const { category, categories } = Astro.props;
+
+// Mapping des catégories pour l'affichage
+const categoryMapping = {
+  'Guide': 'Guides pratiques',
+  'Conseils': 'Conseils de pro',
+  'Planification': 'Planifier son potager',
+  'Équipement': 'Matériel & Outils'
+} as const;
+
+// Fonction pour obtenir le texte affiché pour chaque catégorie
+const getCategoryDisplayText = (cat: string) => {
+  return categoryMapping[cat as keyof typeof categoryMapping] || cat;
+};
+---
+
+<div class="relative bg-gradient-to-b from-soil-50 via-soil-50 to-white dark:from-soil-900 dark:via-soil-900 dark:to-soil-950">
+  <!-- Texture de fond -->
+  <div class="absolute inset-0 bg-texture-paper opacity-5"></div>
+  
+  <div class="container mx-auto px-4">
+    <!-- En-tête -->
+    <div class="pt-32 pb-12">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-5xl md:text-6xl font-display font-bold mb-6 bg-gradient-to-r from-soil-900 to-soil-800 dark:from-soil-100 dark:to-soil-200 bg-clip-text text-transparent">
+          Le Blog du Potager Expert
+        </h1>
+        <p class="text-xl text-soil-700 dark:text-soil-300 font-medium max-w-2xl mx-auto">
+          Découvrez nos articles, guides et conseils pour devenir un expert du jardinage
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigation par catégorie -->
+    <nav class="pb-8" aria-label="Catégories d'articles">
+      <div class="flex flex-wrap items-center justify-center gap-4 max-w-4xl mx-auto">
+        <a 
+          href="/blog"
+          class={`px-8 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+            !category 
+              ? 'bg-gradient-to-r from-leaf-600 to-leaf-500 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5' 
+              : 'bg-white/90 text-soil-700 hover:bg-leaf-500 hover:text-white shadow-sm hover:shadow-md dark:bg-soil-800/90 dark:text-soil-300'
+          }`}
+        >
+          Tous les articles
+        </a>
+
+        <a 
+          href="/blog?category=Guides pratiques"
+          class={`px-8 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+            category === "Guides pratiques"
+              ? 'bg-gradient-to-r from-leaf-600 to-leaf-500 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5' 
+              : 'bg-white/90 text-soil-700 hover:bg-leaf-500 hover:text-white shadow-sm hover:shadow-md dark:bg-soil-800/90 dark:text-soil-300'
+          }`}
+        >
+          Guides pratiques
+        </a>
+
+        <a 
+          href="/blog?category=Conseils de pro"
+          class={`px-8 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+            category === "Conseils de pro"
+              ? 'bg-gradient-to-r from-leaf-600 to-leaf-500 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5' 
+              : 'bg-white/90 text-soil-700 hover:bg-leaf-500 hover:text-white shadow-sm hover:shadow-md dark:bg-soil-800/90 dark:text-soil-300'
+          }`}
+        >
+          Conseils de pro
+        </a>
+
+        <a 
+          href="/blog?category=Planifier son potager"
+          class={`px-8 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+            category === "Planifier son potager"
+              ? 'bg-gradient-to-r from-leaf-600 to-leaf-500 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5' 
+              : 'bg-white/90 text-soil-700 hover:bg-leaf-500 hover:text-white shadow-sm hover:shadow-md dark:bg-soil-800/90 dark:text-soil-300'
+          }`}
+        >
+          Planifier son potager
+        </a>
+
+        <a 
+          href="/blog?category=Matériel & Outils"
+          class={`px-8 py-3 rounded-xl text-base font-medium transition-all duration-300 ${
+            category === "Matériel & Outils"
+              ? 'bg-gradient-to-r from-leaf-600 to-leaf-500 text-white shadow-md hover:shadow-lg transform hover:-translate-y-0.5' 
+              : 'bg-white/90 text-soil-700 hover:bg-leaf-500 hover:text-white shadow-sm hover:shadow-md dark:bg-soil-800/90 dark:text-soil-300'
+          }`}
+        >
+          Matériel & Outils
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+  // Mettre à jour l'URL lorsqu'une catégorie est cliquée
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryLinks = document.querySelectorAll('[data-category]');
+    
+    categoryLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const category = (e.currentTarget as HTMLElement).dataset.category;
+        if (category) {
+          window.location.href = `/blog?category=${category}`;
+        }
+      });
+    });
+  });
+</script>

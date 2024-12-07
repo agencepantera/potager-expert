@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { blogPosts } from '../../data/blog';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+
+const post = blogPosts.find(p => p.slug === 'tomates-debutants');
+if (!post) throw new Error('Article non trouvé');
+
+const headings = [
+  { text: "Pourquoi cultiver des tomates ?", slug: "pourquoi", depth: 2 },
+  { text: "Choisir ses variétés", slug: "varietes", depth: 2 },
+  { text: "Les secrets des semis", slug: "semis", depth: 2 },
+  { text: "La plantation au top", slug: "plantation", depth: 2 },
+  { text: "L'entretien au quotidien", slug: "entretien", depth: 2 },
+  { text: "La récolte et ses secrets", slug: "recolte", depth: 2 }
+];
+---
+
+<Layout title={post.title}>
+  <div class="h-24"></div>
+  <section class="bg-gradient-to-br from-leaf-50 to-white py-16">
+    <div class="container mx-auto px-4">
+      <header class="max-w-4xl mx-auto text-center">
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 border border-leaf-400/50 text-leaf-800 text-sm">
+            {post.category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800">{post.title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="font-medium">{post.author}</span>
+          <span>•</span>
+          <time datetime={post.date} class="font-medium">{new Date(post.date).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}</time>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-12">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+        <TableOfContents headings={headings} />
+      </aside>
+      
+      <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
+        <p class="text-xl text-gray-600 mb-8 font-medium">{post.excerpt}</p>
+
+        <h2 id="pourquoi">Pourquoi cultiver des tomates ?</h2>
+        <p>
+          Ah, les tomates ! Ces petites boules de bonheur qui font la fierté de tout jardinier qui se respecte. 
+          Si vous débutez dans le jardinage, vous ne pouvez pas passer à côté de ce légume-fruit star. Pourquoi ? 
+          Parce que c'est facile (si, si, je vous assure), gratifiant (rien de tel que de croquer dans SA tomate), 
+          et délicieux (incomparable avec les tomates du supermarché) !
+        </p>
+
+        <h2 id="varietes">Choisir ses variétés</h2>
+        <p>
+          Il existe des centaines de variétés de tomates, c'est un peu comme choisir un parfum de glace chez un 
+          glacier italien ! Voici mes recommandations pour les débutants :
+        </p>
+        <ul>
+          <li><strong>Coeur de Boeuf :</strong> La star des salades, grosse et charnue (mais un peu capricieuse)</li>
+          <li><strong>Roma :</strong> La championne des sauces, super productive et résistante</li>
+          <li><strong>Cerise :</strong> Pour le grignotage, pousse même en pot</li>
+        </ul>
+
+        <h2 id="semis">Les secrets des semis</h2>
+        <p>
+          Les semis, c'est comme élever des bébés : il faut de la patience et beaucoup d'amour ! Voici comment je procède :
+        </p>
+        <ul>
+          <li>Semez en février-mars à l'intérieur (oui, dans votre salon s'il le faut !)</li>
+          <li>Utilisez des godets biodégradables (les racines adorent)</li>
+          <li>Terreau spécial semis + chaleur douce = combo gagnant</li>
+          <li>Arrosez par le dessous (comme au bar, mais avec de l'eau)</li>
+        </ul>
+
+        <h2 id="plantation">La plantation au top</h2>
+        <p>
+          Mi-mai, quand les saints de glace sont passés (ces rabat-joie qui nous font poireauter), c'est le grand jour ! 
+          Voici ma technique infaillible :
+        </p>
+        <ul>
+          <li>Faites un trou ÉNORME (40cm minimum, on n'est pas radins)</li>
+          <li>Au fond : compost + corne broyée (le petit-déj des champions)</li>
+          <li>Enterrez jusqu'aux premières feuilles (oui, la tige va faire des racines, magique !)</li>
+          <li>Installez tout de suite les tuteurs (c'est comme la ceinture de sécurité, obligatoire)</li>
+        </ul>
+
+        <h2 id="entretien">L'entretien au quotidien</h2>
+        <p>
+          C'est là que ça devient fun ! Les tomates, c'est un peu comme des ados : ça pousse dans tous les sens si on ne les 
+          cadre pas. Voici les gestes qui sauvent :
+        </p>
+        <ul>
+          <li><strong>L'égourmandage :</strong> Enlevez les gourmands (ces petites pousses entre la tige et les branches) tous les 3-4 jours</li>
+          <li><strong>L'arrosage :</strong> Régulier mais pas excessif (comme le rosé en été)</li>
+          <li><strong>La taille :</strong> Gardez 3-4 bouquets de fruits maximum pour les grosses tomates</li>
+        </ul>
+
+        <h2 id="recolte">La récolte et ses secrets</h2>
+        <p>
+          Le moment tant attendu ! Voici mes règles d'or pour une récolte au top :
+        </p>
+        <ul>
+          <li>Récoltez quand les fruits sont bien colorés mais encore fermes</li>
+          <li>Gardez la queue (le pédoncule), ça conserve mieux</li>
+          <li>Ne mettez JAMAIS vos tomates au frigo (c'est un crime contre le goût)</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

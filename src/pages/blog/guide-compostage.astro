@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { blogPosts } from '../../data/blog';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+
+const post = blogPosts.find(p => p.slug === 'guide-compostage');
+if (!post) throw new Error('Article non trouvé');
+
+const headings = [
+  { text: "Le compostage, c'est la vie !", slug: "introduction", depth: 2 },
+  { text: "Les ingrédients magiques", slug: "ingredients", depth: 2 },
+  { text: "Les matières vertes (l'azote)", slug: "matieres-vertes", depth: 3 },
+  { text: "Les matières brunes (le carbone)", slug: "matieres-brunes", depth: 3 },
+  { text: "L'art de la préparation", slug: "preparation", depth: 2 },
+  { text: "Entretien et surveillance", slug: "entretien", depth: 2 },
+  { text: "Utilisation de l'or noir", slug: "utilisation", depth: 2 },
+  { text: "Les problèmes et leurs solutions", slug: "problemes", depth: 2 }
+];
+---
+
+<Layout title={post.title}>
+  <div class="h-24"></div>
+  <section class="bg-gradient-to-br from-leaf-50 to-white py-16">
+    <div class="container mx-auto px-4">
+      <header class="max-w-4xl mx-auto text-center">
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 border border-leaf-400/50 text-leaf-800 text-sm">
+            {post.category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800">{post.title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="font-medium">{post.author}</span>
+          <span>•</span>
+          <time datetime={post.date} class="font-medium">{new Date(post.date).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          })}</time>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-12">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+        <TableOfContents headings={headings} />
+      </aside>
+      
+      <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
+        <p class="text-xl text-gray-600 mb-8 font-medium">{post.excerpt}</p>
+        
+        <h2 id="introduction">Le compostage, c'est la vie !</h2>
+        <p>
+          Salut les jardiniers en herbe ! Aujourd'hui, on va parler d'un truc qui pue mais qui vaut de l'or : le compost ! 
+          C'est un peu comme faire la cuisine pour votre jardin, sauf que là, plus ça fermente, mieux c'est. Après des années 
+          à triturer mon compost dans tous les sens, je vais vous livrer tous mes petits secrets pour transformer vos déchets 
+          en un compost digne d'un grand chef !
+        </p>
+
+        <h2 id="ingredients">Les ingrédients magiques</h2>
+        <p>
+          Pour faire un bon compost, c'est comme une recette de cuisine : il faut les bons ingrédients dans les bonnes proportions. 
+          Voici ma recette secrète :
+        </p>
+        
+        <h3 id="matieres-vertes">Les matières vertes (l'azote)</h3>
+        <ul>
+          <li>Épluchures de fruits et légumes (même les peaux de bananes, elles font un carton !)</li>
+          <li>Tonte de gazon fraîche (mais pas tout d'un coup, sinon ça fait une bouillie pas possible)</li>
+          <li>Marc de café (oui, même votre café raté peut servir à quelque chose)</li>
+          <li>Restes de fruits et légumes (sauf les agrumes, ils font la tête dans le compost)</li>
+        </ul>
+
+        <h3 id="matieres-brunes">Les matières brunes (le carbone)</h3>
+        <ul>
+          <li>Feuilles mortes (ramassez-les toutes, c'est votre trésor d'automne)</li>
+          <li>Paille et foin (mais pas le foin moisi, on n'est pas des barbares)</li>
+          <li>Brindilles et petits bouts de bois (coupés en petits morceaux, on n'est pas des bûcherons)</li>
+          <li>Carton brun non imprimé (déchiré en petits morceaux, comme une lettre d'amour)</li>
+        </ul>
+
+        <h2 id="preparation">L'art de la préparation</h2>
+        <p>
+          Maintenant qu'on a nos ingrédients, il faut les assembler comme un grand chef ! Voici les étapes pour un compost 5 étoiles :
+        </p>
+        <ol>
+          <li>Choisissez un endroit mi-ombragé (votre compost n'est pas un lézard qui bronze)</li>
+          <li>Alternez les couches vertes et brunes comme un mille-feuille géant</li>
+          <li>Gardez le tout humide mais pas détrempé (comme une éponge essorée)</li>
+          <li>Brassez de temps en temps (c'est votre séance de gym hebdomadaire)</li>
+        </ol>
+
+        <h2 id="entretien">Entretien et surveillance</h2>
+        <p>
+          Un compost, c'est comme un animal de compagnie : il faut s'en occuper régulièrement. Voici les signes qui montrent 
+          que votre compost est heureux :
+        </p>
+        <ul>
+          <li>Il dégage une bonne odeur de sous-bois (pas de poubelle !)</li>
+          <li>Il est humide mais pas détrempé</li>
+          <li>Il héberge plein de petites bêtes (c'est la vie !)</li>
+          <li>Sa température est tiède au cœur (comme un bon gâteau qui sort du four)</li>
+        </ul>
+
+        <h2 id="utilisation">Utilisation de l'or noir</h2>
+        <p>
+          Après quelques mois de patience (oui, Rome ne s'est pas faite en un jour), votre compost est prêt quand :
+        </p>
+        <ul>
+          <li>Il a une belle couleur brun foncé</li>
+          <li>Il sent bon la terre de forêt</li>
+          <li>On ne reconnaît plus les ingrédients de départ</li>
+        </ul>
+        <p>
+          Utilisez-le pour vos plantations, vos semis, ou en paillage. C'est le caviar de vos plantes !
+        </p>
+
+        <h2 id="problemes">Les problèmes et leurs solutions</h2>
+        <p>
+          Même les meilleurs composts ont parfois des petits soucis. Voici les solutions :
+        </p>
+        <ul>
+          <li><strong>Ça pue :</strong> Trop de matières vertes ! Ajoutez du carton ou des feuilles mortes</li>
+          <li><strong>C'est trop sec :</strong> Un petit arrosage et ça repart !</li>
+          <li><strong>Rien ne se décompose :</strong> Découpez plus petit et brassez plus souvent</li>
+          <li><strong>Les rongeurs s'invitent :</strong> Évitez les restes de viande et de pain</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

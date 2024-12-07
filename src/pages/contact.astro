@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+
+const title = "Contact - Potager Expert";
+const description = "Contactez-nous pour toute question sur le jardinage potager. Notre équipe est là pour vous aider à faire pousser un potager prospère.";
+---
+
+<Layout title={title} description={description}>
+  <div class="bg-white py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl space-y-16">
+        <div class="text-center">
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Contactez-nous</h1>
+          <p class="mt-6 text-lg leading-8 text-gray-600">
+            Vous avez une question sur le jardinage potager ? Besoin de conseils personnalisés ? N'hésitez pas à nous contacter !
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* Informations de contact */}
+          <div class="space-y-8">
+            <h2 class="text-2xl font-bold text-gray-900">Informations</h2>
+            <dl class="space-y-6">
+              <div>
+                <dt class="text-base font-semibold text-gray-900">Email</dt>
+                <dd class="mt-1">
+                  <a href="mailto:contact@potager-expert.fr" class="text-leaf-600 hover:text-leaf-900">
+                    contact@potager-expert.fr
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt class="text-base font-semibold text-gray-900">Réseaux sociaux</dt>
+                <dd class="mt-1 space-y-2">
+                  <a href="#" class="text-leaf-600 hover:text-leaf-900 block">
+                    Facebook
+                  </a>
+                  <a href="#" class="text-leaf-600 hover:text-leaf-900 block">
+                    Instagram
+                  </a>
+                  <a href="#" class="text-leaf-600 hover:text-leaf-900 block">
+                    Pinterest
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* Formulaire de contact */}
+          <form class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-900">Nom</label>
+              <div class="mt-1">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-leaf-500 focus:ring-leaf-500 sm:text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
+              <div class="mt-1">
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-leaf-500 focus:ring-leaf-500 sm:text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="subject" class="block text-sm font-medium text-gray-900">Sujet</label>
+              <div class="mt-1">
+                <input
+                  type="text"
+                  name="subject"
+                  id="subject"
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-leaf-500 focus:ring-leaf-500 sm:text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-900">Message</label>
+              <div class="mt-1">
+                <textarea
+                  name="message"
+                  id="message"
+                  rows="4"
+                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-leaf-500 focus:ring-leaf-500 sm:text-sm"
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                class="w-full rounded-md border border-transparent bg-leaf-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-leaf-700 focus:outline-none focus:ring-2 focus:ring-leaf-500 focus:ring-offset-2"
+              >
+                Envoyer
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* FAQ */}
+        <div class="mt-16">
+          <h2 class="text-2xl font-bold text-gray-900 mb-8">Questions fréquentes</h2>
+          <dl class="space-y-8">
+            <div>
+              <dt class="text-base font-semibold text-gray-900">Combien de temps pour avoir une réponse ?</dt>
+              <dd class="mt-2 text-base text-gray-600">Nous nous efforçons de répondre à toutes les demandes dans un délai de 48 heures ouvrées.</dd>
+            </div>
+            <div>
+              <dt class="text-base font-semibold text-gray-900">Proposez-vous des consultations personnalisées ?</dt>
+              <dd class="mt-2 text-base text-gray-600">Oui, nous pouvons vous proposer des conseils personnalisés pour votre potager. Précisez votre demande dans le formulaire de contact.</dd>
+            </div>
+            <div>
+              <dt class="text-base font-semibold text-gray-900">Comment puis-je suivre vos actualités ?</dt>
+              <dd class="mt-2 text-base text-gray-600">Suivez-nous sur nos réseaux sociaux et inscrivez-vous à notre newsletter pour ne rien manquer de nos conseils et actualités.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

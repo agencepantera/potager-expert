@@ -1,0 +1,141 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { blogPosts } from '../../data/blog';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+
+const post = blogPosts.find(p => p.url === '/blog/potager-carre');
+if (!post) throw new Error('Article non trouvé');
+
+const formattedDate = new Date(post.date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// Définir les titres pour le sommaire
+const headings = [
+  { text: "Qu'est-ce qu'un potager en carrés ?", slug: "definition" },
+  { text: "Les avantages du potager carré", slug: "avantages" },
+  { text: "Comment construire son potager", slug: "construction" },
+  { text: "Organisation des cultures", slug: "organisation" },
+  { text: "Entretien et suivi", slug: "entretien" },
+  { text: "Conseils pour réussir", slug: "conseils" }
+];
+---
+
+<Layout title={`${post.title} | Potager Expert`}>
+  <article class="relative">
+    <!-- Hero Section -->
+    <div class="relative h-[60vh] min-h-[400px] max-h-[600px]">
+      <img
+        src={post.image}
+        alt={post.title}
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-black/20"></div>
+      <div class="absolute inset-0 flex items-center">
+        <div class="container mx-auto px-4">
+          <div class="max-w-3xl">
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              {post.title}
+            </h1>
+            <p class="text-xl text-white/90 mb-6">
+              {post.description}
+            </p>
+            <div class="flex items-center space-x-4 text-white/80">
+              <div class="flex items-center">
+                <img
+                  src={post.author.image}
+                  alt={post.author.name}
+                  class="w-10 h-10 rounded-full border-2 border-white/20"
+                />
+                <span class="ml-2">{post.author.name}</span>
+              </div>
+              <span>•</span>
+              <time datetime={post.date}>{formattedDate}</time>
+              <span>•</span>
+              <span>{post.readingTime}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu de l'article -->
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sommaire -->
+        <div class="lg:col-span-1">
+          <TableOfContents headings={headings} />
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="lg:col-span-3 prose prose-lg dark:prose-invert prose-headings:font-display prose-headings:font-bold prose-h2:text-3xl prose-h3:text-2xl prose-p:text-soil-700 dark:prose-p:text-soil-300 prose-a:text-leaf-600 hover:prose-a:text-leaf-700 dark:prose-a:text-leaf-400 dark:hover:prose-a:text-leaf-300">
+          <h2 id="definition">Qu'est-ce qu'un potager en carrés ?</h2>
+          <p>
+            Le potager en carrés est une méthode de jardinage qui consiste à diviser l'espace de culture en petits carrés de taille égale. Cette technique, inspirée des jardins médiévaux, a été modernisée dans les années 1970 par Mel Bartholomew.
+          </p>
+
+          <h2 id="avantages">Les avantages du potager carré</h2>
+          <p>
+            Cette méthode présente de nombreux avantages :
+          </p>
+          <ul>
+            <li>Optimisation de l'espace</li>
+            <li>Facilité d'entretien</li>
+            <li>Production diversifiée</li>
+            <li>Idéal pour les débutants</li>
+          </ul>
+
+          <h2 id="construction">Comment construire son potager</h2>
+          <p>
+            Les étapes de construction :
+          </p>
+          <ul>
+            <li>Choisir l'emplacement (ensoleillé)</li>
+            <li>Préparer le terrain</li>
+            <li>Construire les bordures</li>
+            <li>Diviser en carrés de 30x30cm</li>
+          </ul>
+
+          <h2 id="organisation">Organisation des cultures</h2>
+          <p>
+            Comment organiser vos plantations :
+          </p>
+          <ul>
+            <li>Un légume différent par carré</li>
+            <li>Respecter les associations de plantes</li>
+            <li>Alterner les familles de légumes</li>
+            <li>Prévoir la rotation des cultures</li>
+          </ul>
+
+          <h2 id="entretien">Entretien et suivi</h2>
+          <p>
+            L'entretien quotidien comprend :
+          </p>
+          <ul>
+            <li>Arrosage régulier</li>
+            <li>Désherbage des carrés</li>
+            <li>Surveillance des plants</li>
+            <li>Récolte à maturité</li>
+          </ul>
+
+          <h2 id="conseils">Conseils pour réussir</h2>
+          <p>
+            Pour optimiser votre potager en carrés :
+          </p>
+          <ul>
+            <li>Commencez petit</li>
+            <li>Utilisez un bon terreau</li>
+            <li>Notez vos plantations</li>
+            <li>Adaptez-vous à votre climat</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Articles recommandés -->
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

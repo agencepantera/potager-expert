@@ -1,0 +1,136 @@
+---
+import Layout from './Layout.astro';
+import { blogPosts } from '../data/blog';
+
+interface Props {
+  title: string;
+  description?: string;
+  date: string;
+  author: string;
+  image: string;
+  category: string;
+}
+
+const { title, description, date, author, image, category } = Astro.props;
+
+// Trouver les articles en relation (même catégorie)
+const relatedPosts = blogPosts
+  .filter(post => post.category === category && post.title !== title)
+  .slice(0, 3);
+
+// Fonction pour générer le sommaire à partir du contenu
+function generateTableOfContents(content) {
+  const headings = [];
+  const regex = /<h([2-3])[^>]*>(.*?)<\/h\1>/g;
+  let match;
+
+  while ((match = regex.exec(content)) !== null) {
+    headings.push({
+      level: parseInt(match[1]),
+      text: match[2].replace(/<[^>]*>/g, ''), // Supprimer les balises HTML
+      id: match[2].toLowerCase().replace(/[^a-z0-9]+/g, '-')
+    });
+  }
+
+  return headings;
+}
+
+const headings = generateTableOfContents(await Astro.slots.render('default'));
+---
+
+<Layout title={title} description={description}>
+  <article class="relative pt-24 pb-16">
+    <!-- En-tête de l'article -->
+    <header class="mb-16 text-center">
+      <div class="container mx-auto px-6">
+        <h1 class="text-4xl md:text-5xl font-display font-bold text-leaf-950 mb-6">
+          {title}
+        </h1>
+        <div class="flex items-center justify-center space-x-4 text-leaf-700">
+          <time datetime={date}>{new Date(date).toLocaleDateString('fr-FR', { dateStyle: 'long' })}</time>
+          <span>•</span>
+          <span>{author}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-12 gap-8">
+        <!-- Sommaire (gauche) -->
+        <aside class="col-span-3 hidden lg:block">
+          <div class="sticky top-24">
+            <h2 class="text-xl font-display font-semibold text-leaf-900 mb-4">Sommaire</h2>
+            <nav class="space-y-3">
+              {headings.map((heading) => (
+                <a
+                  href={`#${heading.id}`}
+                  class:list={[
+                    'block text-leaf-700 hover:text-leaf-900 transition-colors duration-200',
+                    {
+                      'pl-4': heading.level === 3
+                    }
+                  ]}
+                >
+                  {heading.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
+
+        <!-- Contenu principal -->
+        <div class="col-span-12 lg:col-span-6">
+          <div class="prose prose-leaf max-w-none">
+            <slot />
+          </div>
+        </div>
+
+        <!-- Articles en relation (droite) -->
+        <aside class="col-span-3 hidden lg:block">
+          <div class="sticky top-24">
+            <h2 class="text-xl font-display font-semibold text-leaf-900 mb-4">Articles en relation</h2>
+            <div class="space-y-6">
+              {relatedPosts.map((post) => (
+                <a href={`/blog/${post.slug}`} class="block group">
+                  <div class="aspect-video rounded-xl overflow-hidden mb-3">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <h3 class="font-medium text-leaf-900 group-hover:text-leaf-700 transition-colors duration-200">
+                    {post.title}
+                  </h3>
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  /* Styles pour la prose */
+  :global(.prose-leaf) {
+    --tw-prose-body: theme('colors.leaf.700');
+    --tw-prose-headings: theme('colors.leaf.900');
+    --tw-prose-links: theme('colors.leaf.800');
+    --tw-prose-bold: theme('colors.leaf.900');
+    --tw-prose-counters: theme('colors.leaf.600');
+    --tw-prose-bullets: theme('colors.leaf.400');
+    --tw-prose-quotes: theme('colors.leaf.900');
+    --tw-prose-quote-borders: theme('colors.leaf.200');
+    --tw-prose-captions: theme('colors.leaf.600');
+    --tw-prose-code: theme('colors.leaf.900');
+    --tw-prose-pre-code: theme('colors.leaf.200');
+    --tw-prose-pre-bg: theme('colors.leaf.900');
+  }
+
+  /* Style pour les liens actifs dans le sommaire */
+  :global(.prose-leaf a:hover) {
+    color: theme('colors.leaf.600');
+  }
+</style>

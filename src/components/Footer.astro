@@ -1,0 +1,95 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  Expertise: [
+    { label: 'Guides Expert', href: '/guides' },
+    { label: 'Blog', href: '/blog' },
+    { label: 'Contact', href: '/contact' },
+  ],
+  Resources: [
+    { label: 'Calendrier de Culture', href: '/calendrier' },
+    { label: 'Base de Connaissances', href: '/ressources' },
+    { label: 'FAQ', href: '/faq' },
+  ],
+  Communauté: [
+    { label: 'Forum', href: '/forum' },
+    { label: 'Événements', href: '/evenements' },
+    { label: 'Témoignages', href: '/temoignages' },
+  ],
+};
+
+const socialLinks = [
+  { 
+    label: 'Instagram',
+    href: '#',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.875 2.125h-9.75A5 5 0 002.125 7.125v9.75a5 5 0 005 5h9.75a5 5 0 005-5v-9.75a5 5 0 00-5-5z M12 16.875a4.875 4.875 0 110-9.75 4.875 4.875 0 010 9.75z M16.875 7.125v0" />`
+  },
+  { 
+    label: 'Facebook',
+    href: '#',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />`
+  },
+  { 
+    label: 'YouTube',
+    href: '#',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z M9.75 15.02l5.75-3.27-5.75-3.27v6.54z" />`
+  },
+];
+---
+
+<footer class="bg-soil-50/80 dark:bg-soil-900 pt-20 pb-10 border-t border-leaf-900/10">
+  <div class="container mx-auto px-6">
+    <!-- Section principale -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+      <!-- À propos -->
+      <div class="lg:col-span-2">
+        <a href="/" class="inline-block mb-6">
+          <span class="text-2xl font-display font-bold bg-gradient-to-r from-leaf-600 to-leaf-500 bg-clip-text text-transparent">
+            Potager Expert
+          </span>
+        </a>
+        <p class="text-soil-700 dark:text-soil-300 mb-8 max-w-md">
+          Votre guide expert pour créer et entretenir un potager d'exception. 
+          Découvrez nos guides et conseils pour cultiver comme un professionnel.
+        </p>
+        <!-- Réseaux sociaux -->
+        <div class="flex space-x-4">
+          {socialLinks.map(social => (
+            <a 
+              href={social.href}
+              class="w-10 h-10 flex items-center justify-center rounded-full border border-leaf-200 dark:border-leaf-800 text-soil-600 dark:text-soil-400 hover:border-leaf-500 hover:text-leaf-500 transition-colors duration-200"
+              aria-label={social.label}
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" set:html={social.icon} />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Liens -->
+      {Object.entries(footerLinks).map(([title, links]) => (
+        <div>
+          <h3 class="font-display font-bold text-soil-800 dark:text-soil-100 mb-6">{title}</h3>
+          <ul class="space-y-4">
+            {links.map(link => (
+              <li>
+                <a 
+                  href={link.href}
+                  class="text-soil-600 dark:text-soil-400 hover:text-leaf-600 dark:hover:text-leaf-400 transition-colors duration-200"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center text-soil-600 dark:text-soil-400 border-t border-leaf-900/10 pt-8">
+      <p>&copy; {currentYear} Potager Expert. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>

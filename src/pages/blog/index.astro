@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { blogPosts } from '../../data/blog';
+
+// Trier les articles par date
+const sortedPosts = blogPosts.sort((a, b) => 
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+const postsPerPage = 6;
+const currentPage = Number(Astro.url.searchParams.get('page')) || 1;
+const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+const startIndex = (currentPage - 1) * postsPerPage;
+const endIndex = startIndex + postsPerPage;
+const currentPosts = sortedPosts.slice(startIndex, endIndex);
+---
+
+<Layout title="Blog - Potager Expert">
+  <div class="h-16"></div>
+  <section class="bg-gradient-to-br from-leaf-50 to-white py-16 mb-12">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl font-display font-bold text-leaf-800 mb-4">Conseils & Astuces</h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">Découvrez nos guides pour réussir votre potager</p>
+    </div>
+  </section>
+
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {currentPosts.map(post => (
+        <BlogCard 
+          title={post.title}
+          excerpt={post.excerpt}
+          date={post.date}
+          image={post.image}
+          slug={post.slug}
+          category={post.category}
+          author={post.author}
+        />
+      ))}
+    </div>
+
+    {totalPages > 1 && (
+      <nav class="flex justify-center items-center gap-4 mb-12" aria-label="Pagination">
+        {currentPage > 1 && (
+          <a 
+            href={currentPage === 2 ? "/blog" : `/blog/page/${currentPage - 1}`}
+            class="px-4 py-2 bg-leaf-100 rounded-lg hover:bg-leaf-200 transition-colors"
+            rel="prev"
+          >
+            Précédent
+          </a>
+        )}
+
+        <div class="flex items-center gap-2">
+          {[...Array(totalPages)].map((_, i) => {
+            const pageNum = i + 1;
+            const isCurrentPage = pageNum === currentPage;
+            return (
+              <a
+                href={pageNum === 1 ? "/blog" : `/blog/page/${pageNum}`}
+                class={`px-4 py-2 rounded-lg transition-colors ${
+                  isCurrentPage 
+                    ? "bg-leaf-200 text-leaf-900" 
+                    : "bg-leaf-100 hover:bg-leaf-200"
+                }`}
+                aria-current={isCurrentPage ? "page" : undefined}
+              >
+                {pageNum}
+              </a>
+            );
+          })}
+        </div>
+
+        {currentPage < totalPages && (
+          <a 
+            href={`/blog/page/${currentPage + 1}`}
+            class="px-4 py-2 bg-leaf-100 rounded-lg hover:bg-leaf-200 transition-colors"
+            rel="next"
+          >
+            Suivant
+          </a>
+        )}
+      </nav>
+    )}
+  </div>
+</Layout>

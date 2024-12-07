@@ -1,0 +1,182 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { blogPosts } from '../../data/blog';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+
+const post = blogPosts.find(p => p.url === '/blog/calendrier-semis');
+if (!post) throw new Error('Article non trouvé');
+
+const formattedDate = new Date(post.date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// Définir les titres pour le sommaire
+const headings = [
+  { text: "L'importance du calendrier des semis", slug: "importance" },
+  { text: "Printemps (Mars - Mai)", slug: "printemps" },
+  { text: "Été (Juin - Août)", slug: "ete" },
+  { text: "Automne (Septembre - Novembre)", slug: "automne" },
+  { text: "Conseils pour réussir vos semis", slug: "conseils" },
+  { text: "Facteurs à prendre en compte", slug: "facteurs" },
+  { text: "Conclusion", slug: "conclusion" }
+];
+---
+
+<Layout title={`${post.title} | Potager Expert`}>
+  <article class="relative">
+    <!-- Hero Section -->
+    <div class="relative h-[60vh] min-h-[400px] max-h-[600px]">
+      <img
+        src={post.image}
+        alt={post.title}
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-soil-950/60 to-soil-950/90"></div>
+      <div class="absolute inset-0 flex items-center">
+        <div class="container mx-auto px-4">
+          <div class="max-w-3xl mx-auto text-center text-white">
+            <a 
+              href={`/blog/${post.category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'et')}`}
+              class="inline-block px-4 py-2 mb-6 text-sm font-medium bg-leaf-600/90 hover:bg-leaf-600 rounded-full transition-colors"
+            >
+              {post.category}
+            </a>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
+              {post.title}
+            </h1>
+            <div class="flex items-center justify-center space-x-4 text-soil-200">
+              <div class="flex items-center space-x-2">
+                <img
+                  src={post.author.image}
+                  alt={post.author.name}
+                  class="w-10 h-10 rounded-full border-2 border-leaf-400"
+                />
+                <span class="font-medium">{post.author.name}</span>
+              </div>
+              <span>•</span>
+              <time datetime={post.date}>{formattedDate}</time>
+              <span>•</span>
+              <span>{post.readingTime}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu de l'article -->
+    <div class="container mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sommaire -->
+        <div class="lg:col-span-1">
+          <TableOfContents headings={headings} />
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="lg:col-span-3 prose prose-lg dark:prose-invert prose-headings:font-display prose-headings:font-bold prose-h2:text-3xl prose-h3:text-2xl prose-p:text-soil-700 dark:prose-p:text-soil-300 prose-a:text-leaf-600 hover:prose-a:text-leaf-700 dark:prose-a:text-leaf-400 dark:hover:prose-a:text-leaf-300">
+          <h2 id="importance">L'importance du calendrier des semis</h2>
+          <p>
+            Un bon timing est essentiel pour réussir son potager. Chaque légume a sa période idéale de semis qui dépend de ses besoins en température et de son temps de croissance.
+          </p>
+
+          <h2 id="printemps">Printemps (Mars - Mai)</h2>
+          <h3>Mars</h3>
+          <p>Sous abri :</p>
+          <ul>
+            <li>Tomates</li>
+            <li>Poivrons</li>
+            <li>Aubergines</li>
+            <li>Laitues</li>
+          </ul>
+          
+          <p>En pleine terre :</p>
+          <ul>
+            <li>Petits pois</li>
+            <li>Fèves</li>
+            <li>Épinards</li>
+          </ul>
+
+          <h3>Avril</h3>
+          <p>Sous abri :</p>
+          <ul>
+            <li>Concombres</li>
+            <li>Courgettes</li>
+            <li>Melons</li>
+          </ul>
+          
+          <p>En pleine terre :</p>
+          <ul>
+            <li>Carottes</li>
+            <li>Radis</li>
+            <li>Betteraves</li>
+          </ul>
+
+          <h3>Mai</h3>
+          <p>En pleine terre :</p>
+          <ul>
+            <li>Haricots</li>
+            <li>Maïs</li>
+            <li>Pommes de terre</li>
+          </ul>
+
+          <h2 id="ete">Été (Juin - Août)</h2>
+          <h3>Juin</h3>
+          <ul>
+            <li>Laitues d'été</li>
+            <li>Chicorées</li>
+            <li>Haricots verts (2ème série)</li>
+          </ul>
+
+          <h3>Juillet</h3>
+          <ul>
+            <li>Carottes d'hiver</li>
+            <li>Navets d'hiver</li>
+            <li>Chicorées frisées</li>
+          </ul>
+
+          <h2 id="automne">Automne (Septembre - Novembre)</h2>
+          <h3>Septembre</h3>
+          <ul>
+            <li>Épinards d'hiver</li>
+            <li>Mâche</li>
+            <li>Radis d'hiver</li>
+          </ul>
+
+          <h2 id="conseils">Conseils pour réussir vos semis</h2>
+          <h3>La préparation du sol</h3>
+          <p>
+            Avant de semer, il est important de :
+          </p>
+          <ul>
+            <li>Ameublir le sol</li>
+            <li>Retirer les mauvaises herbes</li>
+            <li>Enrichir avec du compost si nécessaire</li>
+          </ul>
+
+          <h3>La profondeur de semis</h3>
+          <p>
+            Une règle générale : la profondeur de semis est environ 2 à 3 fois la taille de la graine.
+          </p>
+
+          <h2 id="facteurs">Facteurs à prendre en compte</h2>
+          <ul>
+            <li>Votre zone climatique</li>
+            <li>Les risques de gel</li>
+            <li>L'exposition de votre jardin</li>
+            <li>La nature de votre sol</li>
+          </ul>
+
+          <h2 id="conclusion">Conclusion</h2>
+          <p>
+            Ce calendrier est un guide général qui doit être adapté à votre région et aux conditions météorologiques de l'année. N'hésitez pas à tenir un journal de bord pour noter vos observations et affiner votre calendrier au fil des saisons.
+          </p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Articles recommandés -->
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+</Layout>

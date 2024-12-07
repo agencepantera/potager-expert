@@ -1,0 +1,103 @@
+---
+import BlogPost from '../../layouts/BlogPost.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { blogPosts } from '../../data/blog';
+
+export async function getStaticPaths() {
+  const sortedPosts = blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const postsPerPage = 6;
+  const totalPages = Math.ceil(sortedPosts.length / postsPerPage);
+  
+  return Array.from({ length: totalPages - 1 }, (_, i) => i + 2).map((page) => {
+    const start = (page - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    return {
+      params: { page: String(page) },
+      props: { 
+        posts: sortedPosts.slice(start, end),
+        currentPage: page,
+        totalPages
+      }
+    };
+  });
+}
+
+const { page } = Astro.params;
+const { posts, currentPage, totalPages } = Astro.props;
+---
+
+<BlogPost
+  title="Blog | Potager Expert"
+  description="Découvrez nos articles, conseils et guides pour réussir votre potager"
+  date=""
+  author=""
+  image=""
+  category=""
+>
+  <div class="relative bg-gradient-to-b from-soil-50 via-soil-50 to-white dark:from-soil-900 dark:via-soil-900 dark:to-soil-950">
+    <div class="absolute inset-0 bg-texture-paper opacity-5"></div>
+    
+    <div class="container mx-auto px-4">
+      <div class="pt-32 pb-12">
+        <div class="max-w-3xl mx-auto text-center">
+          <h1 class="text-5xl md:text-6xl font-display font-bold mb-6 bg-gradient-to-r from-soil-900 to-soil-800 dark:from-soil-100 dark:to-soil-200 bg-clip-text text-transparent">
+            Blog Potager Expert
+          </h1>
+          <p class="text-xl text-soil-700 dark:text-soil-300 font-medium max-w-2xl mx-auto">
+            Découvrez nos articles, conseils et guides pour réussir votre potager
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <main class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      {posts.map(post => (
+        <BlogCard {...post} />
+      ))}
+    </div>
+
+    {/* Pagination */}
+    <div class="flex justify-center items-center space-x-4">
+      <a
+        href={currentPage === 2 ? "/blog" : `/blog/${currentPage - 1}`}
+        class="px-4 py-2 rounded-lg border border-soil-200 text-soil-600 hover:text-soil-900 hover:border-soil-400 dark:border-soil-800 dark:text-soil-400 dark:hover:text-soil-100 dark:hover:border-soil-600 transition-colors duration-200"
+      >
+        &larr; Précédent
+      </a>
+
+      <div class="flex space-x-2">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+          <a
+            href={num === 1 ? `/blog` : `/blog/${num}`}
+            class={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+              num === currentPage
+                ? 'bg-leaf-600 text-white dark:bg-leaf-500'
+                : 'border border-soil-200 text-soil-600 hover:text-soil-900 hover:border-soil-400 dark:border-soil-800 dark:text-soil-400 dark:hover:text-soil-100 dark:hover:border-soil-600'
+            }`}
+          >
+            {num}
+          </a>
+        ))}
+      </div>
+
+      {currentPage < totalPages && (
+        <a
+          href={`/blog/${currentPage + 1}`}
+          class="px-4 py-2 rounded-lg border border-soil-200 text-soil-600 hover:text-soil-900 hover:border-soil-400 dark:border-soil-800 dark:text-soil-400 dark:hover:text-soil-100 dark:hover:border-soil-600 transition-colors duration-200"
+        >
+          Suivant &rarr;
+        </a>
+      )}
+    </div>
+
+    {posts.length === 0 && (
+      <div class="text-center py-12">
+        <h3 class="text-xl font-medium text-soil-700 dark:text-soil-300">
+          Aucun article trouvé
+        </h3>
+      </div>
+    )}
+  </main>
+</BlogPost>
