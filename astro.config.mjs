@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://potager-express.com',
+  site: 'https://potager-expert.fr',
   integrations: [
     tailwind(),
     mdx(),

@@ -19,7 +19,7 @@ const relatedPosts = blogPosts
   .slice(0, 3);
 
 // Fonction pour générer le sommaire à partir du contenu
-function generateTableOfContents(content) {
+function generateTableOfContents(content: string) {
   const headings = [];
   const regex = /<h([2-3])[^>]*>(.*?)<\/h\1>/g;
   let match;
@@ -37,8 +37,8 @@ function generateTableOfContents(content) {
 
 // Fonction pour générer les chemins des images optimisées
 function getOptimizedImagePaths(imagePath: string) {
-  const imageBaseName = imagePath.split('/').pop().split('.')[0];
-  const imageExt = imagePath.split('.').pop();
+  const imageBaseName = imagePath?.split('/')?.pop()?.split('.')?.[0] ?? '';
+  const imageExt = imagePath?.split('.')?.pop() ?? '';
   return {
     mobile: `/images/optimized/${imageBaseName}-mobile.${imageExt}`,
     tablet: `/images/optimized/${imageBaseName}-tablet.${imageExt}`,
