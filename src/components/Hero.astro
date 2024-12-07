@@ -45,9 +45,9 @@ import Newsletter from './Newsletter.astro';
 
       <!-- Section newsletter -->
       <div class="p-8 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm">
-        <h3 class="text-xl font-display font-semibold text-leaf-900 mb-3">
+        <h2 class="text-xl font-display font-semibold text-leaf-900 mb-3">
           Restez informé
-        </h3>
+        </h2>
         <p class="text-leaf-700 mb-6 text-sm leading-relaxed">
           Inscrivez-vous à notre newsletter pour recevoir nos meilleurs conseils de jardinage.
         </p>
@@ -69,38 +69,41 @@ import Newsletter from './Newsletter.astro';
       </div>
 
       <!-- Features -->
-      <div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
-          <div class="mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
+      <div class="lg:col-span-3">
+        <h2 class="text-2xl font-display font-semibold text-leaf-900 mb-6">Nos services</h2>
+        <div class="space-y-4">
+          <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
+            <div class="mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-leaf-900 font-medium mb-1">Guides Pratiques</h3>
+              <p class="text-leaf-700 text-sm">Des conseils d'experts pour votre potager</p>
+            </div>
           </div>
-          <div>
-            <h4 class="text-leaf-900 font-medium mb-1">Guides Pratiques</h4>
-            <p class="text-leaf-700 text-sm">Des conseils d'experts pour votre potager</p>
+          <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
+            <div class="mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-leaf-900 font-medium mb-1">Conseils Personnalisés</h3>
+              <p class="text-leaf-700 text-sm">Adaptés à votre niveau et vos besoins</p>
+            </div>
           </div>
-        </div>
-        <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
-          <div class="mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-          </div>
-          <div>
-            <h4 class="text-leaf-900 font-medium mb-1">Conseils Personnalisés</h4>
-            <p class="text-leaf-700 text-sm">Adaptés à votre niveau et vos besoins</p>
-          </div>
-        </div>
-        <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
-          <div class="mr-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <div>
-            <h4 class="text-leaf-900 font-medium mb-1">Contenu Régulier</h4>
-            <p class="text-leaf-700 text-sm">Nouveaux articles chaque semaine</p>
+          <div class="p-6 rounded-2xl bg-leaf-100/70 backdrop-blur-md border border-leaf-400/50 hover:bg-leaf-100/80 transition-all duration-300 shadow-sm flex items-center">
+            <div class="mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-leaf-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-leaf-900 font-medium mb-1">Contenu Régulier</h3>
+              <p class="text-leaf-700 text-sm">Nouveaux articles chaque semaine</p>
+            </div>
           </div>
         </div>
       </div>

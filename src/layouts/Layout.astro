@@ -4,11 +4,62 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Le guide expert du potager - Conseils et astuces pour réussir votre jardin potager" } = Astro.props;
+const { 
+  title,
+  description = "Potager Expert - Votre guide pour un potager réussi"
+} = Astro.props;
 
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+
+// Import des styles pour extraction
 import '../styles/fonts.css';
+import '../styles/global.css';
+
+// Styles critiques pour le premier rendu
+const criticalStyles = `
+  /* Styles de base */
+  :root {
+    --leaf-50: #f5f9f0;
+    --leaf-100: #e6f1d8;
+    --leaf-200: #cce3b5;
+    --leaf-300: #b3d692;
+    --leaf-400: #99c96f;
+    --leaf-500: #80bb4c;
+    --leaf-600: #669640;
+    --leaf-700: #4d7134;
+    --leaf-800: #334b28;
+    --leaf-900: #1a261c;
+    --leaf-950: #0d1310;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Source Sans Pro', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: #fff;
+  }
+
+  /* Textures essentielles */
+  .bg-texture-soil {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Classes utilitaires essentielles */
+  .container { width: 100%; margin-left: auto; margin-right: auto; }
+  .relative { position: relative; }
+  .absolute { position: absolute; }
+  .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+  .z-10 { z-index: 10; }
+  .hidden { display: none; }
+  .flex { display: flex; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+  .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+  .text-white { color: #fff; }
+`;
 ---
 
 <!DOCTYPE html>
@@ -32,6 +83,39 @@ import '../styles/fonts.css';
     <meta property="twitter:title" content={`${title} | Potager Expert`} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content="/images/og-image.jpg" />
+    
+    <!-- Styles critiques injectés -->
+    <style set:html={criticalStyles}></style>
+
+    <!-- Préchargement des polices -->
+    <link 
+      rel="preload" 
+      href="/fonts/source-sans-pro-v21-latin-regular.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin
+    >
+    <link 
+      rel="preload" 
+      href="/fonts/playfair-display-v30-latin-700.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin
+    >
+
+    <!-- Chargement asynchrone des styles non critiques -->
+    <link 
+      rel="stylesheet" 
+      href={Astro.resolve('../styles/fonts.css')} 
+      media="print" 
+      onload="this.media='all'"
+    >
+    <link 
+      rel="stylesheet" 
+      href={Astro.resolve('../styles/global.css')} 
+      media="print" 
+      onload="this.media='all'"
+    >
   </head>
   <body class="min-h-screen bg-white">
     <Navbar />
