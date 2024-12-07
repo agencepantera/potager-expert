@@ -35,6 +35,20 @@ function generateTableOfContents(content) {
   return headings;
 }
 
+// Fonction pour générer les chemins des images optimisées
+function getOptimizedImagePaths(imagePath: string) {
+  const imageBaseName = imagePath.split('/').pop().split('.')[0];
+  const imageExt = imagePath.split('.').pop();
+  return {
+    mobile: `/images/optimized/${imageBaseName}-mobile.${imageExt}`,
+    tablet: `/images/optimized/${imageBaseName}-tablet.${imageExt}`,
+    desktop: `/images/optimized/${imageBaseName}-desktop.${imageExt}`,
+  };
+}
+
+// Générer les chemins des images optimisées pour l'article principal
+const mainOptimizedImages = getOptimizedImagePaths(image);
+
 const headings = generateTableOfContents(await Astro.slots.render('default'));
 ---
 
@@ -94,9 +108,12 @@ const headings = generateTableOfContents(await Astro.slots.render('default'));
                 <a href={`/blog/${post.slug}`} class="block group">
                   <div class="aspect-video rounded-xl overflow-hidden mb-3">
                     <img
-                      src={post.image}
+                      src={getOptimizedImagePaths(post.image).desktop}
+                      srcset={`${getOptimizedImagePaths(post.image).mobile} 640w, ${getOptimizedImagePaths(post.image).tablet} 1024w, ${getOptimizedImagePaths(post.image).desktop} 1280w`}
+                      sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1280px"
                       alt={post.title}
                       class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                   </div>
                   <h3 class="font-medium text-leaf-900 group-hover:text-leaf-700 transition-colors duration-200">

@@ -12,4 +12,20 @@ export default defineConfig({
     mdx(),
     sitemap(),
   ],
+  output: 'static',
+  build: {
+    assets: 'assets',
+  },
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+      rollupOptions: {
+        output: {
+          assetFileNames: 'assets/[hash][extname]',
+          chunkFileNames: 'assets/[hash].js',
+          entryFileNames: 'assets/[hash].js',
+        },
+      },
+    },
+  },
 });
