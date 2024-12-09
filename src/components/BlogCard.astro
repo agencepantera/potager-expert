@@ -22,10 +22,7 @@ const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
 const categorySlug = category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'et');
 
 // Construire les chemins des images optimisées
-const imageName = image.split('/').pop()?.split('.')[0];
-const mobileSrc = `/images/optimized/${imageName}-mobile.webp`;
-const tabletSrc = `/images/optimized/${imageName}-tablet.webp`;
-const desktopSrc = `/images/optimized/${imageName}-desktop.webp`;
+const imagePath = image;
 
 // Calculer les dimensions pour le ratio aspect
 const aspectRatio = "16/9";
@@ -34,32 +31,13 @@ const aspectRatio = "16/9";
 <article class="group">
   <a href={`/blog/${slug}`} class="block relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
     <div class="aspect-w-16 aspect-h-9">
-      <picture>
-        <source
-          media="(min-width: 1024px)"
-          srcset={desktopSrc}
-          width="1280"
-          height="720"
-        />
-        <source
-          media="(min-width: 640px)"
-          srcset={tabletSrc}
-          width="1024"
-          height="576"
-        />
-        <img
-          src={mobileSrc}
-          srcset={`${mobileSrc} 640w, ${tabletSrc} 1024w, ${desktopSrc} 1280w`}
-          sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1280px"
-          width="640"
-          height="360"
-          alt={title}
-          class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
-          decoding="async"
-          fetchpriority="low"
-        />
-      </picture>
+      <img
+        src={imagePath}
+        alt={title}
+        width="1280"
+        height="720"
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+      />
     </div>
     <div class="space-y-3 p-4 bg-white">
       <!-- Catégorie -->
@@ -95,15 +73,12 @@ const aspectRatio = "16/9";
     padding-bottom: 56.25%; /* 16:9 */
   }
   
-  .aspect-w-16 > picture {
+  .aspect-w-16 > img {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-  }
-
-  .aspect-w-16 img {
     width: 100%;
     height: 100%;
     object-fit: cover;

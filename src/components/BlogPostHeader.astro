@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  author: string;
+  date: string;
+  image: string;
+  readingTime: string;
+}
+
+const { title, category, author, date, image, readingTime } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<section class="relative py-16 min-h-[400px] flex items-center">
+  <div class="absolute inset-0 z-0 overflow-hidden">
+    <img
+      src={image}
+      alt={title}
+      width="1920"
+      height="1080"
+      class="w-full h-full object-cover opacity-30"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-leaf-50/80 via-leaf-50/95 to-white"></div>
+  </div>
+  
+  <div class="container mx-auto px-4 relative z-10">
+    <header class="max-w-4xl mx-auto text-center">
+      <div class="mb-6">
+        <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 backdrop-blur-sm border border-leaf-400/50 text-leaf-800 text-sm">
+          {category}
+        </span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800 drop-shadow-sm">{title}</h1>
+      <div class="flex items-center justify-center gap-4 text-gray-600">
+        <span class="font-medium">{author}</span>
+        <span>•</span>
+        <time datetime={date} class="font-medium">{formattedDate}</time>
+        <span>•</span>
+        <span class="font-medium">{readingTime} de lecture</span>
+      </div>
+    </header>
+  </div>
+</section>

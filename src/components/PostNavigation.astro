@@ -1,0 +1,68 @@
+---
+import type { BlogPost } from '../data/blog';
+
+interface Props {
+  currentPost: BlogPost;
+  allPosts: BlogPost[];
+}
+
+const { currentPost, allPosts } = Astro.props;
+
+// Trier les articles par date
+const sortedPosts = allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+const currentIndex = sortedPosts.findIndex(post => post.slug === currentPost.slug);
+const previousPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+---
+
+<nav class="border-t border-gray-200 mt-12 pt-8" aria-label="Navigation entre les articles">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {previousPost && (
+      <a href={`/blog/${previousPost.slug}`} class="group">
+        <div class="text-sm text-gray-500 mb-2">Article précédent</div>
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
+            <img 
+              src={previousPost.image} 
+              alt={previousPost.title}
+              class="w-full h-full object-cover transition-transform group-hover:scale-110"
+              width="64"
+              height="64"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 group-hover:text-leaf-600 transition-colors line-clamp-2">
+              {previousPost.title}
+            </h3>
+            <p class="text-sm text-gray-500 mt-1">{previousPost.readingTime} de lecture</p>
+          </div>
+        </div>
+      </a>
+    )}
+    
+    {nextPost && (
+      <a href={`/blog/${nextPost.slug}`} class="group md:text-right md:ml-auto">
+        <div class="text-sm text-gray-500 mb-2">Article suivant</div>
+        <div class="flex items-start gap-4 md:flex-row-reverse">
+          <div class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden">
+            <img 
+              src={nextPost.image} 
+              alt={nextPost.title}
+              class="w-full h-full object-cover transition-transform group-hover:scale-110"
+              width="64"
+              height="64"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-gray-900 group-hover:text-leaf-600 transition-colors line-clamp-2">
+              {nextPost.title}
+            </h3>
+            <p class="text-sm text-gray-500 mt-1">{nextPost.readingTime} de lecture</p>
+          </div>
+        </div>
+      </a>
+    )}
+  </div>
+</nav>

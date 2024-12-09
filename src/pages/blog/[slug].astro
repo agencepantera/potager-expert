@@ -3,7 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import { blogPosts } from '../../data/blog';
 import RecommendedPosts from '../../components/RecommendedPosts.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import { Image } from 'astro:assets';
+import BlogPostHeader from '../../components/BlogPostHeader.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+import PostNavigation from '../../components/PostNavigation.astro';
+import ArticleTags from '../../components/ArticleTags.astro';
+import ReadingTime from '../../components/ReadingTime.astro';
+import { ViewTransitions } from 'astro:transitions';
 
 export async function getStaticPaths() {
   return blogPosts.map(post => ({
@@ -13,95 +19,77 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
-const formattedDate = new Date(post.date).toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
-
-// Définir les titres manuellement pour chaque article
-const headings = {
-  'guide-compostage': [
-    { text: "Le compostage, c'est la vie !", slug: "introduction", depth: 2 },
-    { text: "Les ingrédients magiques", slug: "ingredients", depth: 2 },
-    { text: "Les matières vertes (l'azote)", slug: "matieres-vertes", depth: 3 },
-    { text: "Les matières brunes (le carbone)", slug: "matieres-brunes", depth: 3 },
-    { text: "L'art de la préparation", slug: "preparation", depth: 2 },
-    { text: "Entretien et surveillance", slug: "entretien", depth: 2 },
-    { text: "Utilisation de l'or noir", slug: "utilisation", depth: 2 },
-    { text: "Les problèmes et leurs solutions", slug: "problemes", depth: 2 }
-  ],
-  'tomates-debutants': [
-    { text: "Pourquoi cultiver des tomates ?", slug: "pourquoi", depth: 2 },
-    { text: "Choisir ses variétés", slug: "varietes", depth: 2 },
-    { text: "La préparation du sol", slug: "preparation-sol", depth: 2 },
-    { text: "Les secrets de la plantation", slug: "plantation", depth: 2 },
-    { text: "L'entretien au quotidien", slug: "entretien", depth: 2 },
-    { text: "Les problèmes courants", slug: "problemes", depth: 2 },
-    { text: "La récolte et la conservation", slug: "recolte", depth: 2 }
-  ],
-  'permaculture-debutants': [
-    { text: "Qu'est-ce que la permaculture ?", slug: "introduction", depth: 2 },
-    { text: "Les principes fondamentaux", slug: "principes", depth: 2 },
-    { text: "Observer et interagir", slug: "observer", depth: 3 },
-    { text: "Obtenir une production", slug: "production", depth: 3 },
-    { text: "Concevoir son jardin", slug: "conception", depth: 2 },
-    { text: "Les techniques de base", slug: "techniques", depth: 2 },
-    { text: "La gestion de l'eau", slug: "eau", depth: 3 },
-    { text: "Les associations de plantes", slug: "associations", depth: 3 },
-    { text: "Commencer petit", slug: "commencer", depth: 2 }
-  ]
+// Structurer les données pour le schema.org
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.title,
+  "image": post.image,
+  "author": {
+    "@type": "Person",
+    "name": post.author
+  },
+  "datePublished": post.date,
+  "description": post.excerpt,
+  "keywords": post.tags.join(",")
 };
-
-const articleHeadings = headings[post.slug] || [];
 ---
 
 <Layout title={post.title}>
+  <head slot="head">
+    <ViewTransitions />
+    <meta name="description" content={post.excerpt} />
+    <meta property="og:title" content={post.title} />
+    <meta property="og:description" content={post.excerpt} />
+    <meta property="og:image" content={post.image} />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="author" content={post.author} />
+    <meta name="reading-time" content={post.readingTime} />
+    <meta name="keywords" content={post.tags.join(", ")} />
+    <link rel="canonical" href={currentUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  </head>
+
+  <ReadingProgress />
   <div class="h-24"></div>
-  <section class="relative py-16 min-h-[400px] flex items-center">
-    <div class="absolute inset-0 z-0 overflow-hidden">
-      <Image
-        src={post.image}
-        alt={post.title}
-        width={1920}
-        height={1080}
-        class="w-full h-full object-cover opacity-30"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-leaf-50/80 via-leaf-50/95 to-white"></div>
-    </div>
-    
-    <div class="container mx-auto px-4 relative z-10">
-      <header class="max-w-4xl mx-auto text-center">
-        <div class="mb-6">
-          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 backdrop-blur-sm border border-leaf-400/50 text-leaf-800 text-sm">
-            {post.category}
-          </span>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800 drop-shadow-sm">{post.title}</h1>
-        <div class="flex items-center justify-center gap-4 text-gray-600">
-          <span class="font-medium">{post.author}</span>
-          <span>•</span>
-          <time datetime={post.date} class="font-medium">{formattedDate}</time>
-        </div>
-      </header>
-    </div>
-  </section>
+  
+  <BlogPostHeader
+    title={post.title}
+    category={post.category}
+    author={post.author}
+    date={post.date}
+    image={post.image}
+    readingTime={post.readingTime}
+  />
 
   <article class="container mx-auto px-4 py-12">
     <div class="flex flex-col lg:flex-row gap-12 relative">
-      {articleHeadings.length > 0 && (
-        <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
-          <TableOfContents headings={articleHeadings} />
+      {post.headings.length > 0 && (
+        <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1 lg:sticky lg:top-24">
+          <div class="mb-8">
+            <ReadingTime time={post.readingTime} />
+          </div>
+          <TableOfContents headings={post.headings} />
+          <div class="mt-8">
+            <ArticleTags tags={post.tags} />
+          </div>
         </aside>
       )}
       
       <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
         <p class="text-xl text-gray-600 mb-8 font-medium">{post.excerpt}</p>
-        <slot />
+        {post.content && (
+          <div set:html={post.content} />
+        )}
+        
+        <ShareButtons title={post.title} url={currentUrl} />
+        <PostNavigation currentPost={post} allPosts={blogPosts} />
       </div>
     </div>
   </article>
 
-  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} transition:animate="slide" />
 </Layout>

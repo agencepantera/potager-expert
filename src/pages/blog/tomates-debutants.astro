@@ -3,9 +3,15 @@ import Layout from '../../layouts/Layout.astro';
 import { blogPosts } from '../../data/blog';
 import TableOfContents from '../../components/TableOfContents.astro';
 import RecommendedPosts from '../../components/RecommendedPosts.astro';
+import BlogPostHeader from '../../components/BlogPostHeader.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+import { ViewTransitions } from 'astro:transitions';
 
 const post = blogPosts.find(p => p.slug === 'tomates-debutants');
 if (!post) throw new Error('Article non trouvé');
+
+const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const headings = [
   { text: "Pourquoi cultiver des tomates ?", slug: "pourquoi", depth: 2 },
@@ -18,32 +24,34 @@ const headings = [
 ---
 
 <Layout title={post.title}>
+  <head slot="head">
+    <ViewTransitions />
+    <meta name="description" content={post.excerpt} />
+    <meta property="og:title" content={post.title} />
+    <meta property="og:description" content={post.excerpt} />
+    <meta property="og:image" content={post.image} />
+    <meta property="og:type" content="article" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="author" content={post.author} />
+    <meta name="reading-time" content={post.readingTime} />
+    <link rel="canonical" href={currentUrl} />
+  </head>
+
+  <ReadingProgress />
   <div class="h-24"></div>
-  <section class="bg-gradient-to-br from-leaf-50 to-white py-16">
-    <div class="container mx-auto px-4">
-      <header class="max-w-4xl mx-auto text-center">
-        <div class="mb-6">
-          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 border border-leaf-400/50 text-leaf-800 text-sm">
-            {post.category}
-          </span>
-        </div>
-        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800">{post.title}</h1>
-        <div class="flex items-center justify-center gap-4 text-gray-600">
-          <span class="font-medium">{post.author}</span>
-          <span>•</span>
-          <time datetime={post.date} class="font-medium">{new Date(post.date).toLocaleDateString('fr-FR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}</time>
-        </div>
-      </header>
-    </div>
-  </section>
+  
+  <BlogPostHeader
+    title={post.title}
+    category={post.category}
+    author={post.author}
+    date={post.date}
+    image={post.image}
+    readingTime={post.readingTime}
+  />
 
   <article class="container mx-auto px-4 py-12">
     <div class="flex flex-col lg:flex-row gap-12">
-      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1 lg:sticky lg:top-24">
         <TableOfContents headings={headings} />
       </aside>
       
@@ -93,26 +101,30 @@ const headings = [
         <h2 id="entretien">L'entretien au quotidien</h2>
         <p>
           C'est là que ça devient fun ! Les tomates, c'est un peu comme des ados : ça pousse dans tous les sens si on ne les 
-          cadre pas. Voici les gestes qui sauvent :
+          cadre pas un minimum. Voici les gestes essentiels :
         </p>
         <ul>
-          <li><strong>L'égourmandage :</strong> Enlevez les gourmands (ces petites pousses entre la tige et les branches) tous les 3-4 jours</li>
-          <li><strong>L'arrosage :</strong> Régulier mais pas excessif (comme le rosé en été)</li>
-          <li><strong>La taille :</strong> Gardez 3-4 bouquets de fruits maximum pour les grosses tomates</li>
+          <li>Arrosage régulier (mais pas sur les feuilles, elles n'aiment pas la douche)</li>
+          <li>Effeuillage des gourmands (ces petites pousses qui volent l'énergie)</li>
+          <li>Support et tuteurage (pour éviter le camping sauvage dans le potager)</li>
+          <li>Paillage au pied (comme une bonne couverture pour l'hiver)</li>
         </ul>
 
         <h2 id="recolte">La récolte et ses secrets</h2>
         <p>
-          Le moment tant attendu ! Voici mes règles d'or pour une récolte au top :
+          Le moment tant attendu ! Pour des tomates au top, voici mes astuces de pro :
         </p>
         <ul>
           <li>Récoltez quand les fruits sont bien colorés mais encore fermes</li>
-          <li>Gardez la queue (le pédoncule), ça conserve mieux</li>
-          <li>Ne mettez JAMAIS vos tomates au frigo (c'est un crime contre le goût)</li>
+          <li>Coupez au sécateur plutôt que de tirer (respect pour la plante)</li>
+          <li>Ne mettez jamais vos tomates au frigo (c'est un crime contre le goût !)</li>
+          <li>Partagez avec les voisins (ils vous donneront leurs courgettes en échange)</li>
         </ul>
+
+        <ShareButtons title={post.title} url={currentUrl} />
       </div>
     </div>
   </article>
 
-  <RecommendedPosts currentPost={post} allPosts={blogPosts} />
+  <RecommendedPosts currentPost={post} allPosts={blogPosts} transition:animate="slide" />
 </Layout>

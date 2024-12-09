@@ -32,48 +32,47 @@ function getOptimizedImagePaths(imagePath: string) {
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-display font-bold text-center mb-8">Articles recommandés</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {recommendedPosts.map(post => {
-          const optimizedImages = getOptimizedImagePaths(post.image);
-          return (
-            <a 
-              href={`/blog/${post.slug}`} 
-              class="group bg-white dark:bg-soil-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
-            >
-              <div class="relative h-48">
-                <img
-                  src={optimizedImages.desktop}
-                  srcset={`${optimizedImages.mobile} 640w, ${optimizedImages.tablet} 1024w, ${optimizedImages.desktop} 1280w`}
-                  sizes="(max-width: 640px) 640px, (max-width: 1024px) 1024px, 1280px"
-                  alt={post.title}
-                  class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                  <span class="inline-block px-3 py-1 text-sm bg-leaf-600/90 text-white rounded-full mb-2">
-                    {post.category}
-                  </span>
-                  <h3 class="text-lg font-display font-bold text-white">
-                    {post.title}
-                  </h3>
-                </div>
+        {recommendedPosts.map(post => (
+          <a 
+            href={`/blog/${post.slug}`} 
+            class="group bg-white dark:bg-soil-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+          >
+            <div class="relative h-48">
+              <img
+                src={post.image}
+                alt={post.title}
+                width="800"
+                height="400"
+                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-4">
+                <span class="inline-block px-3 py-1 bg-leaf-500/90 backdrop-blur-sm text-white text-sm rounded-full mb-2">
+                  {post.category}
+                </span>
+                <h3 class="text-lg font-medium text-white line-clamp-2">
+                  {post.title}
+                </h3>
               </div>
-              <div class="p-4">
-                <p class="text-soil-600 dark:text-soil-300 line-clamp-2">
-                  {post.excerpt}
-                </p>
-                <div class="mt-4 flex items-center justify-between text-sm text-soil-500 dark:text-soil-400">
-                  <span>{post.readingTime}</span>
-                  <span>{new Date(post.date).toLocaleDateString('fr-FR', { 
+            </div>
+            <div class="p-4">
+              <p class="text-gray-600 dark:text-gray-300 line-clamp-2">
+                {post.excerpt}
+              </p>
+              <div class="mt-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                <span>{post.author}</span>
+                <time datetime={post.date}>
+                  {new Date(post.date).toLocaleDateString('fr-FR', {
                     year: 'numeric',
-                    month: 'short',
+                    month: 'long',
                     day: 'numeric'
-                  })}</span>
-                </div>
+                  })}
+                </time>
               </div>
-            </a>
-          );
-        })}
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>

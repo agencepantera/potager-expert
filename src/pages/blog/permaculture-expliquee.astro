@@ -1,0 +1,180 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import RecommendedPosts from '../../components/RecommendedPosts.astro';
+import { blogPosts } from '../../data/blog';
+
+const title = "La permaculture expliquée : définition, principes et avantages de cette méthode d'agriculture durable";
+const excerpt = "Découvrez la permaculture, une approche holistique du jardinage qui imite les écosystèmes naturels. Apprenez les principes clés et comment débuter dans cette aventure passionnante.";
+const date = "2024-12-16";
+const image = "/images/agriculture_durable_holistique.jpg";
+const category = "Guides pratiques";
+const author = "Marc";
+const slug = "permaculture-expliquee";
+
+const headings = [
+  { text: "Qu'est-ce que la permaculture au juste ?", slug: "quest-ce-que-la-permaculture-au-juste", depth: 2 },
+  { text: "Les principes clés de la permaculture", slug: "les-principes-cles-de-la-permaculture", depth: 2 },
+  { text: "Les avantages de la permaculture : pourquoi tout le monde en parle ?", slug: "les-avantages-de-la-permaculture-pourquoi-tout-le-monde-en-parle", depth: 2 },
+  { text: "Passer à l'action : comment débuter en permaculture ?", slug: "passer-a-laction-comment-debuter-en-permaculture", depth: 2 }
+];
+
+const currentPost = {
+  title,
+  excerpt,
+  date,
+  image,
+  category,
+  author,
+  slug,
+  headings,
+  readingTime: "15 min"
+};
+
+const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+---
+
+<Layout title={title}>
+  <div class="h-24"></div>
+  <section class="relative py-16 min-h-[400px] flex items-center">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <img
+        src={image}
+        alt={title}
+        width="1920"
+        height="1080"
+        class="w-full h-full object-cover opacity-30"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-leaf-50/80 via-leaf-50/95 to-white"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <header class="max-w-4xl mx-auto text-center">
+        <div class="mb-6">
+          <span class="inline-block px-4 py-2 rounded-full bg-leaf-100/70 backdrop-blur-sm border border-leaf-400/50 text-leaf-800 text-sm">
+            {category}
+          </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800 drop-shadow-sm">{title}</h1>
+        <div class="flex items-center justify-center gap-4 text-gray-600">
+          <span class="font-medium">{author}</span>
+          <span>•</span>
+          <time datetime={date} class="font-medium">{formattedDate}</time>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 py-12">
+    <div class="flex flex-col lg:flex-row gap-12 relative">
+      <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1">
+        <TableOfContents headings={headings} />
+      </aside>
+      
+      <div class="flex-grow prose prose-lg max-w-4xl mx-auto order-1 lg:order-2">
+        <p class="text-xl text-gray-600 mb-8 font-medium">{excerpt}</p>
+
+        <p>Salut les amis jardiniers ! Aujourd'hui, on va parler d'un truc qui fait le buzz dans le monde du jardinage : la permaculture. C'est un peu comme si on demandait à Mère Nature de nous filer un coup de main pour faire pousser nos légumes. Alors, prêts à découvrir cette méthode qui fait pousser des sourires sur les visages des jardiniers du dimanche comme des pros ? Attachez vos ceintures, on démarre notre voyage au pays de la permaculture !</p>
+
+        <h2 id="quest-ce-que-la-permaculture-au-juste">Qu'est-ce que la permaculture au juste ?</h2>
+
+        <p>La permaculture, c'est un peu comme le Tetris du jardinage. On essaie de tout faire rentrer parfaitement, mais au lieu de lignes qui disparaissent, on obtient un jardin qui prospère ! Plus sérieusement, la permaculture est une approche holistique de l'agriculture qui vise à créer des écosystèmes durables et autosuffisants.</p>
+
+        <p>Le terme "permaculture" est en fait un mot-valise qui combine "permanent" et "agriculture". L'idée, c'est de concevoir des systèmes agricoles qui imitent les écosystèmes naturels. On ne se contente pas de planter des tomates et des salades côte à côte, on crée un véritable petit monde où chaque élément a sa place et son rôle.</p>
+
+        <p>Je me souviens de ma première expérience en permaculture. J'avais l'impression d'être un chef d'orchestre, mais au lieu de musiciens, je dirigeais des plantes, des insectes et même le sol ! C'est captivant de voir comment tout s'emboîte parfaitement quand on suit les principes de la nature.</p>
+
+        <p>Voici un petit tableau qui résume les différences entre l'agriculture conventionnelle et la permaculture :</p>
+
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Agriculture conventionnelle</th>
+                <th>Permaculture</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Monoculture</td>
+                <td>Polyculture</td>
+              </tr>
+              <tr>
+                <td>Utilisation intensive de pesticides</td>
+                <td>Contrôle naturel des nuisibles</td>
+              </tr>
+              <tr>
+                <td>Dépendance aux énergies fossiles</td>
+                <td>Utilisation d'énergies renouvelables</td>
+              </tr>
+              <tr>
+                <td>Travail du sol intensif</td>
+                <td>Perturbation minimale du sol</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="les-principes-cles-de-la-permaculture">Les principes clés de la permaculture</h2>
+
+        <p>La permaculture, c'est un peu comme apprendre à jouer aux échecs. Il y a des règles de base, mais une fois que tu les maîtrises, les possibilités sont infinies ! Voici les principes fondamentaux qui guident cette approche :</p>
+
+        <ol>
+          <li>Observer et interagir : C'est comme être un détective de la nature. Tu observes ce qui se passe dans ton jardin et tu agis en conséquence.</li>
+          <li>Capter et stocker l'énergie : Imagine que ton jardin est une tirelire géante. Tu cherches à y stocker le plus d'énergie possible (soleil, eau, nutriments) pour les utiliser plus tard.</li>
+          <li>Obtenir une production : Parce qu'au final, on veut quand même manger nos légumes, non ?</li>
+          <li>Appliquer l'autorégulation et accepter la rétroaction : C'est un peu comme laisser la nature te donner des leçons. Si quelque chose ne marche pas, tu ajustes.</li>
+          <li>Utiliser et valoriser les ressources renouvelables : Fini le gaspillage ! Chaque ressource a son utilité.</li>
+        </ol>
+
+        <p>Comme passionné de jardinage depuis plus de vingt ans, je peux te dire que ces principes ont révolutionné ma façon de voir mon potager. C'est comme si j'avais découvert un nouveau superpower !</p>
+
+        <h2 id="les-avantages-de-la-permaculture-pourquoi-tout-le-monde-en-parle">Les avantages de la permaculture : pourquoi tout le monde en parle ?</h2>
+
+        <p>Si la permaculture était une série TV, elle serait certainement en tête des charts ! Mais pourquoi tant d'engouement ? Laisse-moi t'expliquer les avantages de cette méthode d'agriculture durable.</p>
+
+        <p>Tout d'abord, la permaculture est écologiquement responsable. En imitant les écosystèmes naturels, on réduit considérablement notre impact sur l'environnement. Fini les pesticides qui transforment ton jardin en zone de guerre chimique ! Ici, on fait confiance à Dame Nature pour gérer les équilibres.</p>
+
+        <p>Ensuite, c'est économiquement viable. Tu vas peut-être hausser un sourcil, mais je t'assure que c'est vrai ! Une fois que ton système est en place, il devient largement autosuffisant. Plus besoin de dépenser une fortune en engrais ou en eau. C'est comme si ton jardin devenait son propre patron !</p>
+
+        <p>Mais ce n'est pas tout ! La permaculture a aussi des avantages sociaux. Elle encourage la coopération et le partage des connaissances. C'est un peu comme si tu rejoignais un club secret de super-jardiniers. On échange des astuces, des graines, et parfois même des légumes bizarres qu'on a réussi à faire pousser.</p>
+
+        <p>Et puis, soyons honnêtes, c'est fun ! Il n'y a rien de plus satisfaisant que de voir ton petit écosystème prendre vie. C'est comme si tu étais le réalisateur de ton propre documentaire nature, mais en miniature et dans ton jardin.</p>
+
+        <p>Voici une petite liste des avantages de la permaculture :</p>
+
+        <ul>
+          <li>Réduction de l'empreinte écologique</li>
+          <li>Augmentation de la biodiversité</li>
+          <li>Économies d'eau et d'énergie</li>
+          <li>Production d'aliments plus sains</li>
+          <li>Création de liens sociaux</li>
+          <li>Satisfaction personnelle (et crois-moi, ça n'a pas de prix !)</li>
+        </ul>
+
+        <h2 id="passer-a-laction-comment-debuter-en-permaculture">Passer à l'action : comment débuter en permaculture ?</h2>
+
+        <p>Bon, maintenant que tu es convaincu que la permaculture c'est le top du top, tu te demandes sûrement comment te lancer. Pas de panique, je vais te donner quelques conseils pour démarrer en douceur.</p>
+
+        <p>Première étape : observe ton terrain. C'est le moment de jouer les Sherlock Holmes du jardinage. Regarde où le soleil brille le plus, où l'eau s'accumule quand il pleut, quelles plantes poussent naturellement. C'est comme si tu dressais une carte au trésor de ton futur jardin permacole.</p>
+
+        <p>Ensuite, commence petit. Pas besoin de transformer tout ton jardin d'un coup. Choisis un petit coin et expérimente. C'est comme quand tu apprends à faire du vélo : tu commences avec les petites roues avant de te lancer dans le Tour de France !</p>
+
+        <p>N'oublie pas de diversifier tes cultures. En permaculture, on aime bien mélanger les choses. Plante des légumes, des fleurs, des herbes aromatiques. C'est un peu comme si tu organisais une fête où tout le monde est invité !</p>
+
+        <p>Et surtout, sois patient. La permaculture, c'est un marathon, pas un sprint. Ça prend du temps pour que tout s'équilibre, mais crois-moi, le résultat en vaut la peine.</p>
+
+        <p>Toujours prêt à partager mes connaissances, je te conseille aussi de te former. Il existe plein de ressources en ligne, des livres, des cours. C'est comme avoir un coach personnel pour ton jardin !</p>
+
+        <p>En fin de compte, la permaculture c'est plus qu'une méthode de jardinage, c'est une philosophie de vie. C'est apprendre à travailler avec la nature plutôt que contre elle. Alors, prêt à te lancer dans l'aventure ? Ton jardin n'attend que toi pour se transformer en petit paradis écologique !</p>
+      </div>
+    </div>
+  </article>
+
+  <RecommendedPosts currentPost={currentPost} allPosts={blogPosts} />
+</Layout>
