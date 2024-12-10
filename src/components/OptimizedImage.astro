@@ -1,0 +1,34 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  priority?: boolean;
+}
+
+const { 
+  src, 
+  alt, 
+  width = 1280, 
+  height = 720, 
+  class: className = '',
+  priority = false 
+} = Astro.props;
+
+// Déterminer les attributs de chargement en fonction de la priorité
+const loadingAttr = priority ? 'eager' : 'lazy';
+const fetchPriority = priority ? 'high' : 'auto';
+---
+
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  class={className}
+  loading={loadingAttr}
+  decoding="async"
+  fetchpriority={fetchPriority}
+/>

@@ -1,0 +1,46 @@
+---
+interface Props {
+  time: string;
+  showProgress?: boolean;
+}
+
+const { time, showProgress = false } = Astro.props;
+---
+
+{showProgress && (
+  <!-- Barre de progression de lecture -->
+  <div class="fixed top-0 left-0 w-full h-1 z-50">
+    <div id="reading-progress" class="h-full bg-leaf-500 w-0 transition-all duration-150"></div>
+  </div>
+)}
+
+<!-- Temps de lecture -->
+<div class="flex items-center text-inherit">
+  <svg class="w-4 h-4 mr-1.5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+  </svg>
+  <span class="text-sm">{time} de lecture</span>
+</div>
+
+{showProgress && (
+  <script>
+    function updateReadingProgress() {
+      const article = document.querySelector('article');
+      if (!article) return;
+
+      const progress = document.getElementById('reading-progress');
+      if (!progress) return;
+
+      const scrollTop = window.scrollY;
+      const scrollHeight = article.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      
+      const percentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+    }
+
+    document.addEventListener('scroll', updateReadingProgress);
+    document.addEventListener('resize', updateReadingProgress);
+    document.addEventListener('astro:after-swap', updateReadingProgress);
+  </script>
+)}

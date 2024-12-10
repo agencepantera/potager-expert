@@ -1,4 +1,8 @@
 ---
+import { formatDate } from '../utils/dateFormatter';
+import OptimizedImage from './OptimizedImage.astro';
+import ReadingMetrics from './ReadingMetrics.astro';
+
 interface Props {
   title: string;
   excerpt: string;
@@ -7,16 +11,13 @@ interface Props {
   slug: string;
   category: string;
   author: string;
+  readingTime: string;
 }
 
-const { title, excerpt, date, image, slug, category, author } = Astro.props;
+const { title, excerpt, date, image, slug, category, author, readingTime } = Astro.props;
 
 // Formater la date
-const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+const formattedDate = formatDate(date);
 
 // Obtenir le slug de la catégorie pour le lien
 const categorySlug = category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'et');
@@ -31,11 +32,11 @@ const aspectRatio = "16/9";
 <article class="group">
   <a href={`/blog/${slug}`} class="block relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300">
     <div class="aspect-w-16 aspect-h-9">
-      <img
-        src={imagePath}
+      <OptimizedImage
+        src={image}
         alt={title}
-        width="1280"
-        height="720"
+        width={1280}
+        height={720}
         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
       />
     </div>
@@ -56,12 +57,16 @@ const aspectRatio = "16/9";
       </p>
 
       <!-- Métadonnées -->
-      <div class="flex items-center space-x-4 text-sm text-leaf-600">
-        <div class="flex items-center space-x-2">
-          <span>{author}</span>
-        </div>
-        <span>•</span>
+      <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-leaf-600">
+        <span class="font-medium">{author}</span>
+        <span class="hidden sm:inline">•</span>
         <time datetime={date}>{formattedDate}</time>
+        {readingTime && (
+          <>
+            <span class="hidden sm:inline">•</span>
+            <ReadingMetrics time={readingTime} />
+          </>
+        )}
       </div>
     </div>
   </a>
@@ -73,7 +78,7 @@ const aspectRatio = "16/9";
     padding-bottom: 56.25%; /* 16:9 */
   }
   
-  .aspect-w-16 > img {
+  .aspect-w-16 > :global(img) {
     position: absolute;
     top: 0;
     right: 0;

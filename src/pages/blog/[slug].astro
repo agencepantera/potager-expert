@@ -5,10 +5,9 @@ import RecommendedPosts from '../../components/RecommendedPosts.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import BlogPostHeader from '../../components/BlogPostHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
-import ReadingProgress from '../../components/ReadingProgress.astro';
+import ReadingMetrics from '../../components/ReadingMetrics.astro';
 import PostNavigation from '../../components/PostNavigation.astro';
 import ArticleTags from '../../components/ArticleTags.astro';
-import ReadingTime from '../../components/ReadingTime.astro';
 import { ViewTransitions } from 'astro:transitions';
 
 export async function getStaticPaths() {
@@ -53,7 +52,6 @@ const articleSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   </head>
 
-  <ReadingProgress />
   <div class="h-24"></div>
   
   <BlogPostHeader
@@ -70,7 +68,7 @@ const articleSchema = {
       {post.headings.length > 0 && (
         <aside class="lg:w-72 flex-shrink-0 order-2 lg:order-1 lg:sticky lg:top-24">
           <div class="mb-8">
-            <ReadingTime time={post.readingTime} />
+            <ReadingMetrics time={post.readingTime} />
           </div>
           <TableOfContents headings={post.headings} />
           <div class="mt-8">

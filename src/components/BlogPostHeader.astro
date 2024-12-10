@@ -1,4 +1,8 @@
 ---
+import { formatDate } from '../utils/dateFormatter';
+import OptimizedImage from './OptimizedImage.astro';
+import ReadingMetrics from './ReadingMetrics.astro';
+
 interface Props {
   title: string;
   category: string;
@@ -10,24 +14,20 @@ interface Props {
 
 const { title, category, author, date, image, readingTime } = Astro.props;
 
-const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+const formattedDate = formatDate(date);
 ---
+
+<ReadingMetrics time={readingTime} showProgress={true} />
 
 <section class="relative py-16 min-h-[400px] flex items-center">
   <div class="absolute inset-0 z-0 overflow-hidden">
-    <img
+    <OptimizedImage
       src={image}
       alt={title}
-      width="1920"
-      height="1080"
+      width={1920}
+      height={1080}
       class="w-full h-full object-cover opacity-30"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
+      priority={true}
     />
     <div class="absolute inset-0 bg-gradient-to-b from-leaf-50/80 via-leaf-50/95 to-white"></div>
   </div>
@@ -40,12 +40,12 @@ const formattedDate = new Date(date).toLocaleDateString('fr-FR', {
         </span>
       </div>
       <h1 class="text-4xl md:text-5xl font-display font-bold mb-6 text-leaf-800 drop-shadow-sm">{title}</h1>
-      <div class="flex items-center justify-center gap-4 text-gray-600">
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-600">
         <span class="font-medium">{author}</span>
-        <span>•</span>
+        <span class="hidden sm:inline">•</span>
         <time datetime={date} class="font-medium">{formattedDate}</time>
-        <span>•</span>
-        <span class="font-medium">{readingTime} de lecture</span>
+        <span class="hidden sm:inline">•</span>
+        <ReadingMetrics time={readingTime} showProgress={false} />
       </div>
     </header>
   </div>
